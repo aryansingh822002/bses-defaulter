@@ -1,0 +1,164 @@
+header{
+    display:flex;
+    height: 60px;
+    width:100%;
+    box-shadow: 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+   
+}
+.head-logo{
+    width:10%;
+    height: 100%;
+    padding: 10px 25px;
+}
+.head-logo img{
+    object-fit: fill;
+    height: 100%;
+    width: 100%;
+}
+.head-heading{
+    width:80%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.head-heading h1{
+    margin: 0px;
+}
+
+.head-login-status{
+    width:10%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color:white;
+}
+.head-login-status h1{
+    background: linear-gradient(100deg, red,black) ;
+    padding:5px 30px;
+    border-radius: 5px;
+
+}
+/* div{
+    border:solid red 1px;
+} */
+
+
+
+.container{
+    display: flex;
+    flex-wrap: wrap;
+    width:70%;
+    /* height:100%; */
+    min-height: 500px;
+    margin:80px auto;
+    justify-content: center; 
+    align-items: stretch; 
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.img-cont{
+    width:50%;
+    display: flex;
+    align-items: stretch;
+    border-radius: 10px;
+}
+.img-cont img{
+    height:100%;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 10px 0px 0px 10px;
+}
+
+.login-cont{
+    width:50%;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.form-row{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+label{
+    margin-bottom: 3px;
+}
+.required {
+    color: red;
+}
+.form-row input{
+    outline: none;
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid red;
+    background-color: white;
+}
+.button-login{
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 20px;
+    background: linear-gradient(100deg, red,black);
+}
+button:hover{
+    background: linear-gradient(100deg, black,red);
+}
+.form-toggles{
+    display:flex;
+}
+.login-toggle{
+    width:60%;
+}
+.change-pass-toggle{
+    width:40%;
+    text-align: right;
+    
+}
+
+.highlighted{
+    text-decoration: underline;
+}
+
+.highlighted:hover{
+    color:red;
+}
+
+
+
+.footer{
+    display: flex;
+    background-color:	#F4F4F4;
+   position:fixed;
+   bottom: 0px;
+   width: 100%;
+   height: 32px;
+}
+
+.fcomp{
+    display: flex;
+    align-items: center;
+    width: 50%;
+    margin-left: 50px;
+
+}
+.fcompr{
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    width: 100%;
+    margin-right: 50px;
+}
+.fcompm{
+    margin-left: 15px;
+}
+.footer div p{
+    margin:0px 0px;
+    font-size: 12px;
+}

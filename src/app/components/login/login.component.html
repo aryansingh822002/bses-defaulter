@@ -1,0 +1,148 @@
+<header>
+    <div class="head-logo">
+        <img src="/assets/images/bses-rajdhani.jpg">
+    </div>
+    <div class="head-heading">
+        <h1>Welcome</h1>
+    </div>
+    <div class="head-login-status">
+        <h1>RPS</h1>
+    </div>
+</header>
+
+
+
+<div class="container">
+    <div class="img-cont">
+        <img src="/assets/images/cont-1.png">
+    </div>
+    <div class="login-cont">
+        <div class="form">
+
+            <!--Login Form-->
+
+            <div *ngIf="activeForm === 'login'">
+                <form (ngSubmit)="onLogin()" >
+                    <div class="form-row">
+                        <label for="username">Username<span class="required">*</span></label>
+                        <input type="text" name="username" placeholder="Enter your unique username" id="username" [(ngModel)]="loginData.username">
+                    </div>
+                    <div class="form-row">
+                        <label for="password">Password<span class="required">*</span></label>
+                        <input type="password" name="password" placeholder="xxxx-xxxx" id="password" [(ngModel)]="loginData.password">
+                    </div>
+                    
+                    <button type="submit" class="button-login">LOGIN</button>
+                    
+                    <div class="form-toggles">
+                        <div class="login-toggle">
+                            <p (click)="toggleForm('register')"> 
+                                <!-- (click)="toggleForm('register')" -->
+                                Don't have an account ? <span class="highlighted">Register</span>
+                            </p>
+                        </div>
+                        <div class="change-pass-toggle">
+                            <p (click)="toggleForm('change')" class="highlighted">change-password</p>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Register Form-->
+            <div *ngIf="activeForm === 'register'">
+                <form (ngSubmit)="onRegister()" >
+                    <div class="form-row">
+                        <label for="username">Username<span class="required">*</span></label>
+                        <input type="text" name="username" [(ngModel)]="registerData.username" placeholder="Enter your unique username" id="username">
+                    </div>
+                    <div class="form-row">
+                        <label for="email">Email<span class="required">*</span></label>
+                        <input type="email" name="email" [(ngModel)]="registerData.email" placeholder="Enter your valid Email" id="email">
+                    </div>
+                    <div class="form-row">
+                        <label for="password">Password<span class="required">*</span></label>
+                        <input type="password" name="password" [(ngModel)]="registerData.password" placeholder="xxxx-xxxx" id="password">
+                    </div>
+                    <div class="form-row">
+                        <label for="repeatPassword">Repeat Password<span class="required">*</span></label>
+                        <input type="password" name="repeatPassword"  [(ngModel)]="registerData.repeatPassword" placeholder="Repeat password" id="repeatPassword">
+                    </div>
+                    <button type="submit"  class="button-login">REGISTER</button>
+                    
+                    <div class="form-toggles">
+                        <div class="login-toggle">
+                            <p (click)="toggleForm('login')">
+                                <!-- (click)="toggleForm('login')" -->
+                                Already have an account ? <span class="highlighted">Login</span>
+                            </p>
+                        </div>
+                        <div class="change-pass-toggle">
+                            <p class="highlighted" (click)="toggleForm('change')">change-password</p>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!--Change Password-->
+            <div *ngIf="activeForm === 'change'">
+                <form (ngSubmit)="onChangePassword()">
+                    <div class="form-row">
+                        <label for="username">Username<span class="required">*</span></label>
+                        <input type="text" name="username" [(ngModel)]="changePasswordData.username" placeholder="Enter your unique username" id="username">
+                    </div>
+                    <div class="form-row">
+                        <label for="password">Password<span class="required">*</span></label>
+                        <input type="password" name="password"  [(ngModel)]="changePasswordData.oldPassword" placeholder="Enter your old password" id="password">
+                    </div>
+                    <div class="form-row">
+                        <label for="newpassword">New Password<span class="required">*</span></label>
+                        <input type="password" name="newpassword" [(ngModel)]="changePasswordData.newPassword" placeholder="xxxx-xxxx" id="newpassword">
+                    </div>
+                    <div class="form-row">
+                        <label for="confirmPassword">Confirm Password<span class="required">*</span></label>
+                        <input type="password" name="confirmPassword" [(ngModel)]="changePasswordData.confirmPassword" placeholder="Confirm Password" id="confirmPassword">
+                    </div>
+                    
+                    <button type="submit" class="button-login">SUBMIT</button>
+                    
+                    <div class="form-toggles">
+                        <div class="login-toggle">
+                            <p (click)="toggleForm('login')"> 
+                                <!-- (click)="toggleForm('register')" -->
+                                Don't want to change? <span class="highlighted">cancel</span>
+                            </p>
+                        </div>
+                        <!-- <div class="change-pass-toggle">
+                            <p class="highlighted">CANCEL</p>
+                        </div> -->
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <div class="footer">
+        <div class="fcomp">
+            <p>© 2024 BSES Delhi. All Right Reserved.</p>
+        </div>
+        <div class="fcompr">
+            <div class="fcompm">
+                <p>Disclaimer</p>
+            </div>
+            <div class="fcompm">
+                <p>Privacy policy</p>
+            </div>
+            <div class="fcompm">
+                <p>Sitemap</p>
+            </div>
+            <div class="fcompm">
+                <p>Useful Links</p>
+            </div>
+            <div class="fcompm">
+                <a [routerLink]="'/home'">Home</a>
+            </div>
+        </div>
+    </div>
+</footer>

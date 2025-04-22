@@ -1,0 +1,275 @@
+<div class="container">
+    <!-- Sidebar -->
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="logo-section">
+            <div class="logo">
+                <img src="assets/images/bses-rajdhani.jpg" alt="Logo" />
+            </div>
+        </div>
+
+        <hr class="sidebar-separator" />
+
+        <nav class="sidebar-nav">
+            <a (click)="setView('home')" [class.active]="currentView === 'home'">
+                <i class="fas fa-house"></i>
+                <span>Home</span>
+            </a>
+
+            <hr class="sidebar-separator" />
+
+            <a (click)="setView('form1')" [class.active]="currentView === 'form1'">
+                <i class="fas fa-file-alt"></i>
+                <span>Master</span>
+            </a>
+
+            <a (click)="setView('form2')" [class.active]="currentView === 'form2'">
+                <i class="fas fa-file-signature"></i>
+                <span>Upload</span>
+            </a>
+
+            <a (click)="setView('form3')" [class.active]="currentView === 'form3'">
+                <i class="fas fa-clipboard-list"></i>
+                <span>Allotment and Assignment</span>
+            </a>
+
+            <a (click)="setView('form4')" [class.active]="currentView === 'form4'">
+                <i class="fas fa-id-card"></i>
+                <span>Action Taken Report</span>
+            </a>
+
+            <a (click)="setView('form5')" [class.active]="currentView === 'form5'">
+                <i class="fas fa-address-book"></i>
+                <span>Customer Care Services</span>
+            </a>
+
+            <a (click)="setView('form6')" [class.active]="currentView === 'form6'">
+                <i class="fas fa-envelope-open-text"></i>
+                <span>Report</span>
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+        <header class="topbar">
+            <!-- <div class="left-group">
+                <button class="menu-btn" aria-label="Toggle Sidebar">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <rect y="4" width="24" height="2" rx="1" fill="#333" />
+                        <rect y="11" width="24" height="2" rx="1" fill="#333" />
+                        <rect y="18" width="24" height="2" rx="1" fill="#333" />
+                    </svg>
+                </button>
+
+                <input class="search" type="text" placeholder="Search..." />
+            </div> -->
+
+            <div class="system-title">Recovery Process System</div>
+
+            <div class="avatar-wrapper" (click)="toggleLogoutDropdown()">
+                <div class="avatar">👤</div>
+
+                <div class="avatar-dropdown" *ngIf="showLogout" (click)="$event.stopPropagation()">
+                    <button class="logout-btn" (click)="logout(); $event.stopPropagation()">Logout</button>
+                </div>
+            </div>
+
+
+        </header>
+
+
+
+        <section class="content">
+            <div *ngIf="currentView === 'home'">
+                <div class="dash-container">
+                    <!-- Top Cards -->
+                    <div class="card-row">
+                        <div class="card purple">
+                            <p>Month</p>
+                            <h2>$5,00,000</h2>
+                            <p>Total Defaulters</p>
+                            <p>10,000</p>
+                        </div>
+                        <div class="card blue">
+                            <p>Collected</p>
+                            <h2>$1,00,000</h2>
+                            <p>Defaulters Paid</p>
+                            <p>800</p>
+                        </div>
+                        <div class="card dark-blue">
+                            <p>Left</p>
+                            <h2>$4,00,000</h2>
+                            <p>Defaulters Left</p>
+                            <p>9,200</p>
+                        </div>
+                    </div>
+
+                    <!-- Growth Chart Section -->
+                    <div class="growth-card">
+                        <h3>Present State</h3>
+
+                        <div class="chart-row">
+                            <div class="chart-box">
+                                <h3>Defaulters & Total</h3>
+                                <canvas baseChart [data]="barChartData" [type]="barChartType"></canvas>
+                            </div>
+
+                            <div class="chart-box pie-chart-box">
+                                <h3>Collections</h3>
+                                <canvas baseChart [data]="pieChartData" [type]="pieChartType">
+                                </canvas>
+                            </div>
+
+                            <div class="chart-box">
+                                <h3>Progress</h3>
+                                <canvas baseChart [data]="lineChartData" [type]="lineChartType"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Popular Stocks -->
+                    <!-- <div class="stocks-card">
+                      <h3>Popular Stocks</h3>
+                      <div class="stock-list">
+                        <div *ngFor="let stock of stocks" class="stock-item">
+                          <p>{{ stock.name }}</p>
+                          <span [class.green]="stock.profit" [class.red]="!stock.profit">
+                            ${{ stock.value }} 
+                            <i [class]="stock.profit ? 'arrow-up' : 'arrow-down'"></i>
+                          </span>
+                        </div>
+                      </div>
+                    </div> -->
+                </div>
+
+            </div>
+            <hr class="sidebar-separator" />
+
+            <!-- FORM 1 -->
+
+            <div *ngIf="currentView === 'form1'" class="form1-wrapper">
+                <div class="form-heading">
+                    <h2>Recovery Facilitators</h2>
+                </div>
+                <div class="form-cont">
+                    <form>
+                        <div class="form1-grid">
+                            <!-- Row 1 -->
+                            <div class="grid-item">
+                                <label for="compName" class="form-label">Employee Code<span
+                                        class="required">*</span></label>
+                                <input type="text" class="form-control" id="compName" formControlName="compName">
+                            </div>
+                            <div class="grid-item">
+                                <label for="compName" class="form-label">Reporting Person(L1)<span
+                                        class="required">*</span></label>
+                                <input type="text" class="form-control" id="compName" formControlName="compName">
+                            </div>
+                            <div class="grid-item">
+                                <label for="division" class="form-label">Recovery Facilitator Criteria<span class="required">*</span></label>
+                                <select class="form-control" formControlName="division" id="division">
+                                    <option value="">Select Criteria</option>
+                                    <option value="division1">In House</option>
+                                    <option value="division2">In Agency</option>
+                                </select>
+                            </div>
+
+                            <!-- Row 2 -->
+                            <div class="grid-item">
+                                <label for="compName" class="form-label">Mobile number<span
+                                        class="required">*</span></label>
+                                <input type="text" class="form-control" id="compName" formControlName="compName">
+                            </div>
+                            <div class="grid-item">
+                                <label for="division" class="form-label">Company<span class="required">*</span></label>
+                                <select class="form-control" formControlName="division" id="division">
+                                    <option value="">Select Company</option>
+                                    <option value="division1">BRPL</option>
+                                    <option value="division2">BYPL</option>
+                                </select>
+                            </div>
+                            <div class="grid-item">
+                                <label for="division" class="form-label">Division<span class="required">*</span></label>
+                                <select class="form-control" formControlName="division" id="division">
+                                    <option value="">Select Division</option>
+                                    <option value="division1">Division 1</option>
+                                    <option value="division2">Division 2</option>
+                                </select>
+                            </div>
+
+                            <!-- Border row -->
+                            <div class="grid-border"></div>
+
+                            <!-- Row 3 -->
+                            <div class="grid-item">
+                                <label for="compName" class="form-label">Facilitator name<span
+                                        class="required">*</span></label>
+                                <input type="text" class="form-control" id="compName" formControlName="compName">
+                            </div>
+                            <div class="grid-item">
+                                <label for="compName" class="form-label">Date of joining<span
+                                        class="required">*</span></label>
+                                <input type="text" class="form-control" id="compName" formControlName="compName">
+                            </div>
+                            <div class="grid-item grid-merge">
+                                <label for="remarks" class="form-label">Address<span class="required">*</span></label>
+                                <textarea id="remarks" formControlName="remarks" rows="5"></textarea>
+                            </div>
+
+                            <!-- Row 4 -->
+                            <div class="grid-item">
+                                <label for="division" class="form-label">Circle<span class="required">*</span></label>
+                                <select class="form-control" formControlName="division" id="division">
+                                    <option value="">Select Circle</option>
+                                    <option value="division1">Circle 1</option>
+                                    <option value="division2">Circle 2</option>
+                                </select>
+                            </div>
+                            <div class="grid-item">
+                                <label for="division" class="form-label">Account Class<span class="required">*</span></label>
+                                <select class="form-control" formControlName="division" id="division">
+                                    <option value="">Select Class</option>
+                                    <option value="division1">SLCC</option>
+                                    <option value="division2">None</option>
+                                </select>
+                            </div>
+
+                            <!-- Button row -->
+                            <div class="grid-buttons">
+                                <div class="left-buttons">
+                                    <button type="submit">Submit</button>
+                                    <button type="reset">Refresh</button>
+                                </div>
+                                <div class="right-button">
+                                    <button type="button">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+
+
+            <div *ngIf="currentView === 'form2'">
+                <h2>Form 2</h2>
+            </div>
+            <div *ngIf="currentView === 'form3'">
+                <h2>Form 3</h2>
+            </div>
+            <div *ngIf="currentView === 'form4'">
+                <h2>Form 4</h2>
+            </div>
+            <div *ngIf="currentView === 'form5'">
+                <h2>Form 5</h2>
+            </div>
+            <div *ngIf="currentView === 'form6'">
+                <h2>Form 6</h2>
+            </div>
+        </section>
+        <footer class="footer">
+            <div>&#64;2024 BSES Delhi. All Rights Reserved.</div>
+        </footer>
+    </main>
+</div>
