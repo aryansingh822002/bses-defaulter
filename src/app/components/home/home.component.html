@@ -22,12 +22,12 @@
                 <i class="fas fa-file-alt"></i>
                 <span>Master</span>
             </a>
-            
+
             <a (click)="setView('form2')" [class.active]="currentView === 'form2'">
                 <i class="fas fa-clipboard-list"></i>
                 <span>Allotment & Assignment</span>
             </a>
-            
+
             <a (click)="setView('form3')" [class.active]="currentView === 'form3'">
                 <i class="fas fa-file-signature"></i>
                 <span>Recovery Report & Update</span>
@@ -149,12 +149,12 @@
 
             <!-- FORM 1 -->
 
-            <div *ngIf="currentView === 'form1'" class="form1-wrapper">
+            <div *ngIf="currentView === 'form1'" class="form-wrapper">
                 <div class="form-heading">
                     <h2>Recovery Facilitators</h2>
                 </div>
                 <div class="form-cont">
-                    <form>
+                    <form [formGroup]="form1" (ngSubmit)="onSubmit()">
                         <div class="form1-grid">
                             <!-- Row 1 -->
                             <div class="grid-item">
@@ -163,21 +163,21 @@
                                 <input type="text" class="form-control" id="compName" formControlName="compName">
                             </div>
                             <div class="grid-item">
-                                <label for="division" class="form-label">Company<span class="required">*</span></label>
-                                <select class="form-control" formControlName="division" id="division">
+                                <label for="company" class="form-label">Company<span class="required">*</span></label>
+                                <select class="form-control" formControlName="company" id="company">
                                     <option value="">Select Company</option>
-                                    <option value="division1">BRPL</option>
-                                    <option value="division2">BYPL</option>
+                                    <option value="company1">BRPL</option>
+                                    <option value="company2">BYPL</option>
                                 </select>
 
                             </div>
                             <div class="grid-item">
 
-                                <label for="division" class="form-label">Circle<span class="required">*</span></label>
-                                <select class="form-control" formControlName="division" id="division">
+                                <label for="Circle" class="form-label">Circle<span class="required">*</span></label>
+                                <select class="form-control" formControlName="Circle" id="Circle">
                                     <option value="">Select Circle</option>
-                                    <option value="division1">Circle 1</option>
-                                    <option value="division2">Circle 2</option>
+                                    <option value="Circle1">Circle 1</option>
+                                    <option value="Circle2">Circle 2</option>
                                 </select>
                             </div>
 
@@ -193,22 +193,22 @@
                             </div>
 
                             <div class="grid-item">
-                                <label for="division" class="form-label">Account Class<span
+                                <label for="accClass" class="form-label">Account Class<span
                                         class="required">*</span></label>
-                                <select class="form-control" formControlName="division" id="division">
+                                <select class="form-control" formControlName="accClass" id="accClass">
                                     <option value="">Select Class</option>
-                                    <option value="division1">SLCC</option>
-                                    <option value="division2">None</option>
+                                    <option value="accClass1">SLCC</option>
+                                    <option value="accClass2">None</option>
                                 </select>
                             </div>
 
                             <div class="grid-item">
-                                <label for="division" class="form-label">Recovery Facilitator Criteria<span
+                                <label for="criteria" class="form-label">Recovery Facilitator Criteria<span
                                         class="required">*</span></label>
-                                <select class="form-control" formControlName="division" id="division">
+                                <select class="form-control" formControlName="criteria" id="criteria">
                                     <option value="">Select Criteria</option>
-                                    <option value="division1">In House</option>
-                                    <option value="division2">In Agency</option>
+                                    <option value="criteria1">In House</option>
+                                    <option value="criteria2">In Agency</option>
                                 </select>
                             </div>
 
@@ -217,9 +217,10 @@
 
                             <!-- Row 3 -->
                             <div class="grid-item">
-                                <label for="compName" class="form-label">Facilitator name<span
+                                <label for="facilitatorName" class="form-label">Facilitator name<span
                                         class="required">*</span></label>
-                                <input type="text" class="form-control" id="compName" formControlName="compName">
+                                <input type="text" class="form-control" id="facilitatorName"
+                                    formControlName="facilitatorName">
                             </div>
                             <div class="grid-item">
                                 <label for="joiningDate" class="form-label">Date of joining<span
@@ -233,22 +234,24 @@
 
                             <!-- Row 4 -->
                             <div class="grid-item">
-                                <label for="compName" class="form-label">Reporting Person(L1)<span
+                                <label for="reportingPerson" class="form-label">Reporting Person(L1)<span
                                         class="required">*</span></label>
-                                <input type="text" class="form-control" id="compName" formControlName="compName">
+                                <input type="text" class="form-control" id="reportingPerson"
+                                    formControlName="reportingPerson">
 
                             </div>
                             <div class="grid-item">
-                                <label for="compName" class="form-label">Mobile number<span
+                                <label for="mobileNumber" class="form-label">Mobile number<span
                                         class="required">*</span></label>
-                                <input type="text" class="form-control" id="compName" formControlName="compName">
+                                <input type="text" class="form-control" id="mobileNumber"
+                                    formControlName="mobileNumber">
                             </div>
 
                             <!-- Button row -->
                             <div class="grid-buttons">
                                 <div class="left-buttons">
                                     <button type="submit">Submit</button>
-                                    <button type="reset">Refresh</button>
+                                    <button type="button" (click)="onReset()">Refresh</button>
                                 </div>
                                 <div class="right-button">
                                     <button type="button">Close</button>
@@ -262,31 +265,32 @@
 
             <!-- FORM 2 -->
 
-            
-            <div *ngIf="currentView === 'form2'" class="form3-wrapper">
+
+            <div *ngIf="currentView === 'form2'" class="form-wrapper">
                 <div class="form-heading">
                     <h2>Role Allotment and Assignment</h2>
                 </div>
                 <div class="form-cont">
-                    <form id="roleAssignmentForm">
+                    <form [formGroup]="form2" (ngSubmit)="onSubmitForm2()">
                         <div class="form1-grid">
                             <!-- Row 1 -->
                             <div class="grid-item">
                                 <label for="employeeId" class="form-label">Employee ID<span
                                         class="required">*</span></label>
-                                <input type="text" class="form-control" id="employeeId" name="employeeId" required />
+                                <input type="text" class="form-control" id="employeeId" formControlName="employeeId"
+                                    required />
                             </div>
+
                             <div class="grid-item">
                                 <label for="employeeName" class="form-label">Employee Name<span
                                         class="required">*</span></label>
-                                <input type="text" class="form-control" id="employeeName" name="employeeName"
+                                <input type="text" class="form-control" id="employeeName" formControlName="employeeName"
                                     readonly />
                             </div>
 
-                            <!-- Row 2 -->
                             <div class="grid-item">
                                 <label for="role" class="form-label">Role<span class="required">*</span></label>
-                                <select class="form-control" id="role" name="role" required>
+                                <select class="form-control" id="role" formControlName="role" required>
                                     <option value="defaulterRecoveryOfficer">Defaulter Recovery Officer</option>
                                     <option value="fieldRecoveryAgent">Field Recovery Agent</option>
                                     <option value="customerRelationsOfficer">Customer Relations Officer</option>
@@ -295,10 +299,13 @@
                                     <option value="recoverySupervisor">Recovery Supervisor</option>
                                 </select>
                             </div>
+
+
+                            <!-- Row 2 -->
                             <div class="grid-item">
                                 <label for="assignedWork" class="form-label">Assigned Work<span
                                         class="required">*</span></label>
-                                <select class="form-control" id="assignedWork" name="assignedWork" required>
+                                <select class="form-control" id="assignedWork" formControlName="assignedWork" required>
                                     <option value="defaulterIdentification">Defaulter Identification</option>
                                     <option value="billCollection">Bill Collection</option>
                                     <option value="paymentNegotiation">Payment Negotiation</option>
@@ -308,22 +315,23 @@
                                 </select>
                             </div>
 
-                            <!-- Row 3 -->
                             <div class="grid-item">
                                 <label for="startDate" class="form-label">Start Date<span
                                         class="required">*</span></label>
-                                <input type="date" class="form-control" id="startDate" name="startDate" required />
+                                <input type="date" class="form-control" id="startDate" formControlName="startDate"
+                                    required />
                             </div>
                             <div class="grid-item">
                                 <label for="endDate" class="form-label">End Date<span class="required">*</span></label>
-                                <input type="date" class="form-control" id="endDate" name="endDate" required />
+                                <input type="date" class="form-control" id="endDate" formControlName="endDate"
+                                    required />
                             </div>
 
                             <!-- Button row -->
                             <div class="grid-buttons">
                                 <div class="left-buttons">
                                     <button type="submit">Assign Role</button>
-                                    <button type="reset">Reset</button>
+                                    <button type="button" (click)="onResetForm2()">Reset</button>
                                 </div>
                                 <div class="right-button">
                                     <button type="button">Close</button>
@@ -338,37 +346,39 @@
             <!-- FORM 3 -->
 
 
-            <div *ngIf="currentView === 'form3'" class="form2-wrapper">
+            <div *ngIf="currentView === 'form3'" class="form-wrapper">
                 <div class="form-heading">
                     <h2>Recovery Report and Update</h2>
                 </div>
                 <div class="form-cont">
-                    <form id="recoveryUpdateForm">
+                    <form [formGroup]="form3" (ngSubmit)="onSubmitForm3()">
                         <div class="form1-grid">
                             <!-- Row 1 -->
                             <div class="grid-item">
                                 <label for="caNumber" class="form-label">CA Number<span
                                         class="required">*</span></label>
-                                <input type="text" class="form-control" id="caNumber" name="caNumber" required />
+                                <input type="text" class="form-control" id="caNumber" formControlName="caNumber"
+                                    required />
                             </div>
                             <div class="grid-item">
                                 <label for="facilitatorId" class="form-label">Employee ID (Facilitator)<span
                                         class="required">*</span></label>
-                                <input type="text" class="form-control" id="facilitatorId" name="facilitatorId"
-                                    required />
+                                <input type="text" class="form-control" id="facilitatorId"
+                                    formControlName="facilitatorId" required />
                             </div>
                             <div class="grid-item">
                                 <label for="paymentAmount" class="form-label">Payment Amount Collected<span
                                         class="required">*</span></label>
-                                <input type="number" class="form-control" id="paymentAmount" name="paymentAmount"
-                                    required />
+                                <input type="number" class="form-control" id="paymentAmount"
+                                    formControlName="paymentAmount" required />
                             </div>
 
                             <!-- Row 2 -->
                             <div class="grid-item">
                                 <label for="paymentMethod" class="form-label">Payment Method<span
                                         class="required">*</span></label>
-                                <select class="form-control" id="paymentMethod" name="paymentMethod" required>
+                                <select class="form-control" id="paymentMethod" formControlName="paymentMethod"
+                                    required>
                                     <option value="">Select Method</option>
                                     <option value="cash">Cash</option>
                                     <option value="bankTransfer">Bank Transfer</option>
@@ -380,13 +390,14 @@
                             <div class="grid-item">
                                 <label for="paymentDate" class="form-label">Payment Date<span
                                         class="required">*</span></label>
-                                <input type="date" class="form-control" id="paymentDate" name="paymentDate" required />
+                                <input type="date" class="form-control" id="paymentDate" formControlName="paymentDate"
+                                    required />
                             </div>
                             <div class="grid-item">
                                 <label for="outstandingAmount" class="form-label">Outstanding Amount<span
                                         class="required">*</span></label>
                                 <input type="number" class="form-control" id="outstandingAmount"
-                                    name="outstandingAmount" required />
+                                    formControlName="outstandingAmount" required />
                             </div>
 
                             <!-- Border row -->
@@ -396,7 +407,7 @@
                             <div class="grid-item">
                                 <label for="workStatus" class="form-label">Work Status<span
                                         class="required">*</span></label>
-                                <select class="form-control" id="workStatus" name="workStatus" required>
+                                <select class="form-control" id="workStatus" formControlName="workStatus" required>
                                     <option value="">Select Status</option>
                                     <option value="pending">Pending</option>
                                     <option value="inProgress">In Progress</option>
@@ -407,19 +418,19 @@
                             <div class="grid-item">
                                 <label for="nextFollowUp" class="form-label">Next Follow-up Date<span
                                         class="required">*</span></label>
-                                <input type="date" class="form-control" id="nextFollowUp" name="nextFollowUp"
+                                <input type="date" class="form-control" id="nextFollowUp" formControlName="nextFollowUp"
                                     required />
                             </div>
                             <div class="grid-item grid-merge">
                                 <label for="remarks" class="form-label">Remarks/Notes</label>
-                                <textarea id="remarks" name="remarks" rows="7"></textarea>
+                                <textarea id="remarks" formControlName="remarks" rows="7"></textarea>
                             </div>
 
                             <!-- Row 4 -->
                             <div class="grid-item">
                                 <label for="actionTaken" class="form-label">Action Taken<span
                                         class="required">*</span></label>
-                                <select class="form-control" id="actionTaken" name="actionTaken" required>
+                                <select class="form-control" id="actionTaken" formControlName="actionTaken" required>
                                     <option value="">Select Action</option>
                                     <option value="emailReminder">Email Reminder Sent</option>
                                     <option value="fieldVisit">Field Visit</option>
@@ -431,7 +442,7 @@
                             <div class="grid-item">
                                 <label for="finalStatus" class="form-label">Final Status<span
                                         class="required">*</span></label>
-                                <select class="form-control" id="finalStatus" name="finalStatus" required>
+                                <select class="form-control" id="finalStatus" formControlName="finalStatus" required>
                                     <option value="">Select Status</option>
                                     <option value="paidInFull">Paid in Full</option>
                                     <option value="partialPayment">Partial Payment</option>
@@ -440,18 +451,20 @@
                                     <option value="writeOff">Write-Off</option>
                                 </select>
                             </div>
+
+                            <!-- checkbox -->
                             <div class="penalty-check">
                                 <label for="penaltyApplied" class="form-label">Penalty or Interest Applied:<span
                                         class="required">*</span></label>
                                 <input type="checkbox" class="form-control-checkbox" id="penaltyApplied"
-                                    name="penaltyApplied" />
+                                    formControlName="penaltyApplied" />
                             </div>
 
                             <!-- Button row -->
                             <div class="grid-buttons">
                                 <div class="left-buttons">
                                     <button type="submit">Update Recovery Info</button>
-                                    <button type="reset">Reset</button>
+                                    <button type="button" (click)="onResetForm3()">Reset</button>
                                 </div>
                                 <div class="right-button">
                                     <button type="button">Close</button>
@@ -466,21 +479,159 @@
 
 
 
-            
+
 
 
 
             <!-- FORM 4 -->
 
-            <div *ngIf="currentView === 'form4'">
-                <h2>Form 4</h2>
+            <div *ngIf="currentView === 'form4'" class="form-wrapper">
+                <div class="form-heading">
+                    <h2>Action Taken & Report</h2>
+                </div>
+                <div class="form-cont">
+                    <form (ngSubmit)="filterReports(ca.value, date.value, facilitator.value)">
+                        <div class="form4-grid">
+                            <!-- Row 1 -->
+                            <div class="grid-item">
+                                <label for="ca" class="form-label">CA Number</label>
+                                <input type="text" id="ca" class="form-control" #ca placeholder="Enter CA Number" />
+                            </div>
+            
+                            <div class="grid-item">
+                                <label for="date" class="form-label">Date</label>
+                                <input type="date" id="date" class="form-control" #date />
+                            </div>
+            
+                            <div class="grid-item">
+                                <label for="facilitator" class="form-label">Facilitator ID</label>
+                                <input type="text" id="facilitator" class="form-control" #facilitator placeholder="Facilitator ID" />
+                            </div>
+            
+                            <!-- Button Row -->
+                            <div class="grid-buttons">
+                                <div class="left-buttons">
+                                    <button type="submit">Filter</button>
+                                    <button type="button" (click)="resetFilters()">Reset</button>
+                                </div>
+                                <div class="right-button">
+                                    <button type="button">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>CA Number</th>
+                                    <th>Date</th>
+                                    <th>Action Taken</th>
+                                    <th>Facilitator ID</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let report of filteredReports">
+                                    <td>{{ report.caNumber }}</td>
+                                    <td>{{ report.date }}</td>
+                                    <td>{{ report.action }}</td>
+                                    <td>{{ report.facilitator }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p *ngIf="filteredReports.length === 0">No records found.</p>
+                    </div>
+                </div>
+
             </div>
+
+
+            <!-- FORM 5  -->
+
             <div *ngIf="currentView === 'form5'">
-                <h2>Form 5</h2>
+                <div class="form-heading">
+                    <h2>Customer Care Services</h2>
+                </div>
+                <div class="form-cont" id="form-5">
+                    <form (ngSubmit)="submitForm()" #customerCareForm="ngForm">
+                        <div class="form5-grid">
+                          <!-- Row 1: Two half-width inputs -->
+                          <div class="grid-item">
+                            <label for="customerId" class="form-label">Customer ID</label>
+                            <input type="text" id="customerId" name="customerId" class="form-control"
+                              [(ngModel)]="formData.customerId" placeholder="Enter Customer ID" required />
+                          </div>
+                      
+                          <div class="grid-item">
+                            <label for="issueType" class="form-label">Issue Type</label>
+                            <select id="issueType" name="issueType" class="form-control"
+                              [(ngModel)]="formData.issueType" required>
+                              <option value="" disabled>Select issue</option>
+                              <option>Billing Issue</option>
+                              <option>Service Interruption</option>
+                              <option>Wrong CA Details</option>
+                              <option>Other</option>
+                            </select>
+                          </div>
+                      
+                          <!-- Row 2: Full width textarea -->
+                          <div class="grid-item description-item">
+                            <label for="description" class="form-label">Description</label>
+                            <textarea id="description" name="description" class="form-control"
+                              [(ngModel)]="formData.description" rows="4" placeholder="Describe the issue..." required></textarea>
+                          </div>
+                      
+                          <!-- Row 3: Buttons -->
+                          <div class="grid-buttons">
+                            <div class="left-buttons">
+                              <button type="submit" [disabled]="!customerCareForm.form.valid">Submit</button>
+                              <button type="button" (click)="resetForm()">Reset</button>
+                            </div>
+                            <div class="right-button">
+                              <button type="button" (click)="closeForm()">Close</button>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                      
+                      
+                      
+                </div>
             </div>
+
+
+
+            <!-- REPORT -->
             <div *ngIf="currentView === 'form6'">
-                <h2>Form 6</h2>
-            </div>
+                <div class="form-heading">
+                  <h2>Recovery Summary Report</h2>
+                </div>
+              
+                <div class="summary-report-grid">
+                  <div class="summary-table-wrapper">
+                    <table class="report-table">
+                      <thead>
+                        <tr>
+                          <th>Zone</th>
+                          <th>Total Defaulters</th>
+                          <th>Recovered Amount</th>
+                          <th>Pending Amount</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let zone of summaryData">
+                          <td>{{ zone.zoneName }}</td>
+                          <td>{{ zone.totalDefaulters }}</td>
+                          <td>₹{{ zone.recoveredAmount | number }}</td>
+                          <td>₹{{ zone.pendingAmount | number }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              
         </section>
         <footer class="footer">
             <div>&#64;2024 BSES Delhi. All Rights Reserved.</div>

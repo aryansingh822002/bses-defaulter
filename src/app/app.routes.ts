@@ -9,6 +9,3 @@ export const routes: Routes = [
     {path:'home',component:HomeComponent}
 ];
 
-bootstrapApplication(LoginComponent, {
-    providers: [provideRouter(routes)]
-  });
