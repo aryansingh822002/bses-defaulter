@@ -1,71 +1,116 @@
 <div class="container">
     <!-- Sidebar -->
-    <!-- Sidebar -->
-    <aside class="sidebar">
+    <aside class="sidebar" [class.expanded]="sidebarExpanded">
         <div class="logo-section">
             <div class="logo">
-                <img src="assets/images/bses-rajdhani.jpg" alt="Logo" />
+                <!-- Mini logo (shown when sidebar is collapsed) -->
+                <img src="assets/images/bses-batch.png" alt="Mini Logo" class="logo-mini" />
+
+                <!-- Full logo (shown when sidebar is expanded) -->
+                <img src="assets/images/bses-rajdhani.jpg" alt="Full Logo" class="logo-full" />
+            </div>
+            <div class="toggle-sidebar" (click)="toggleSidebar()">
+                <i class="fas fa-chevron-right"></i>
             </div>
         </div>
+        
 
         <hr class="sidebar-separator" />
 
         <nav class="sidebar-nav">
-            <a (click)="setView('home')" [class.active]="currentView === 'home'">
+            <a routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                 <i class="fas fa-house"></i>
                 <span>Home</span>
             </a>
-
             <hr class="sidebar-separator" />
+            <div class="menu-item" [class.expanded]="masterMenuExpanded">
+                <div class="menu-header" (click)="toggleMasterMenu()">
+                    <i class="fas fa-file-alt"></i>
+                    <span>Master</span>
+                    <i class="fas fa-chevron-down toggle-icon" [class.rotate]="masterMenuExpanded"></i>
+                </div>
+                <div class="submenu" *ngIf="masterMenuExpanded">
+                    <a routerLink="/home/master/agency-master" routerLinkActive="active">
+                        <span class="full-label">Agency Master</span>
+                        <span class="short-label">AM</span>
+                    </a>
+                    <a routerLink="/home/master/agency-mapping-master" routerLinkActive="active">
+                        <span class="full-label">Agency Mapping Master</span>
+                        <span class="short-label">AMM</span>
+                    </a>
+                    <a routerLink="/home/master/commission-master" routerLinkActive="active">
+                        <span class="full-label">Commission Master</span>
+                        <span class="short-label">CM</span>
+                    </a>
+                    <a routerLink="/home/master/agency-allocation-master" routerLinkActive="active">
+                        <span class="full-label">Agency Allocation Master</span>
+                        <span class="short-label">AAM</span>
+                    </a>
+                    <a routerLink="/home/master/defaulter-allocation-master" routerLinkActive="active">
+                        <span class="full-label">Defaulter Allocation Master</span>
+                        <span class="short-label">DAM</span>
+                    </a>
+                    <a routerLink="/home/master/role-master" routerLinkActive="active">
+                        <span class="full-label">Role Master</span>
+                        <span class="short-label">RM</span>
+                    </a>
+                    <a routerLink="/home/master/user-master" routerLinkActive="active">
+                        <span class="full-label">User Master</span>
+                        <span class="short-label">UM</span>
+                    </a>
+                    <a routerLink="/home/master/priority-ivr-master" routerLinkActive="active">
+                        <span class="full-label">Priority IVR</span>
+                        <span class="short-label">IVR</span>
+                    </a>
+                </div>
 
-            <a (click)="setView('form1')" [class.active]="currentView === 'form1'">
-                <i class="fas fa-file-alt"></i>
-                <span>Master</span>
-            </a>
+            </div>
 
-            <a (click)="setView('form2')" [class.active]="currentView === 'form2'">
+            <a routerLink="/home/allotment" routerLinkActive="active">
                 <i class="fas fa-clipboard-list"></i>
                 <span>Allotment & Assignment</span>
             </a>
 
-            <a (click)="setView('form3')" [class.active]="currentView === 'form3'">
+            <a routerLink="/home/recovery-report" routerLinkActive="active">
                 <i class="fas fa-file-signature"></i>
                 <span>Recovery Report & Update</span>
             </a>
 
-
-            <a (click)="setView('form4')" [class.active]="currentView === 'form4'">
+            <a routerLink="/home/action-taken" routerLinkActive="active">
                 <i class="fas fa-id-card"></i>
                 <span>Action Taken Report</span>
             </a>
 
-            <a (click)="setView('form5')" [class.active]="currentView === 'form5'">
-                <i class="fas fa-address-book"></i>
-                <span>Customer Care Services</span>
-            </a>
 
-            <a (click)="setView('form6')" [class.active]="currentView === 'form6'">
+            <div class="menu-item" [class.expanded]="customerCareMenuExpanded">
+                <div class="menu-header" (click)="toggleCustomerCareMenu()">
+                    <i class="fas fa-address-book"></i>
+                    <span>Customer Care Services</span>
+                    <i class="fas fa-chevron-down toggle-icon" [class.rotate]="customerCareMenuExpanded"></i>
+                </div>
+                <div class="submenu" *ngIf="customerCareMenuExpanded">
+                    <a routerLink="/home/customer-care/call-center" routerLinkActive="active">
+                        <span class="full-label">Call Center Calling</span>
+                        <span class="short-label">CC</span>
+                    </a>
+                    <a routerLink="/home/customer-care/division-office" routerLinkActive="active">
+                        <span class="full-label">Division Office Calling</span>
+                        <span class="short-label">DOC</span>
+                    </a>
+                </div>
+            </div>
+
+            <a routerLink="/home/report" routerLinkActive="active">
                 <i class="fas fa-envelope-open-text"></i>
                 <span>Report</span>
             </a>
         </nav>
     </aside>
 
+
     <!-- Main Content -->
     <main class="main">
         <header class="topbar">
-            <!-- <div class="left-group">
-                <button class="menu-btn" aria-label="Toggle Sidebar">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                        <rect y="4" width="24" height="2" rx="1" fill="#333" />
-                        <rect y="11" width="24" height="2" rx="1" fill="#333" />
-                        <rect y="18" width="24" height="2" rx="1" fill="#333" />
-                    </svg>
-                </button>
-
-                <input class="search" type="text" placeholder="Search..." />
-            </div> -->
-
             <div class="system-title">Recovery Process System</div>
 
             <div class="avatar-wrapper" (click)="toggleLogoutDropdown()">
@@ -76,562 +121,10 @@
                 </div>
             </div>
 
-
         </header>
 
-
-
         <section class="content">
-            <div *ngIf="currentView === 'home'">
-                <div class="dash-container">
-                    <!-- Top Cards -->
-                    <div class="card-row">
-                        <div class="card purple">
-                            <p>Month</p>
-                            <h2>$5,00,000</h2>
-                            <p>Total Defaulters</p>
-                            <p>10,000</p>
-                        </div>
-                        <div class="card blue">
-                            <p>Collected</p>
-                            <h2>$1,00,000</h2>
-                            <p>Defaulters Paid</p>
-                            <p>800</p>
-                        </div>
-                        <div class="card dark-blue">
-                            <p>Left</p>
-                            <h2>$4,00,000</h2>
-                            <p>Defaulters Left</p>
-                            <p>9,200</p>
-                        </div>
-                    </div>
-
-                    <!-- Growth Chart Section -->
-                    <div class="growth-card">
-                        <h3>Present State</h3>
-
-                        <div class="chart-row">
-                            <div class="chart-box">
-                                <h3>Defaulters & Total</h3>
-                                <canvas baseChart [data]="barChartData" [type]="barChartType"></canvas>
-                            </div>
-
-                            <div class="chart-box pie-chart-box">
-                                <h3>Collections</h3>
-                                <canvas baseChart [data]="pieChartData" [type]="pieChartType">
-                                </canvas>
-                            </div>
-
-                            <div class="chart-box">
-                                <h3>Progress</h3>
-                                <canvas baseChart [data]="lineChartData" [type]="lineChartType"></canvas>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Popular Stocks -->
-                    <!-- <div class="stocks-card">
-                      <h3>Popular Stocks</h3>
-                      <div class="stock-list">
-                        <div *ngFor="let stock of stocks" class="stock-item">
-                          <p>{{ stock.name }}</p>
-                          <span [class.green]="stock.profit" [class.red]="!stock.profit">
-                            ${{ stock.value }} 
-                            <i [class]="stock.profit ? 'arrow-up' : 'arrow-down'"></i>
-                          </span>
-                        </div>
-                      </div>
-                    </div> -->
-                </div>
-
-            </div>
-            <hr class="sidebar-separator" />
-
-            <!-- FORM 1 -->
-
-            <div *ngIf="currentView === 'form1'" class="form-wrapper">
-                <div class="form-heading">
-                    <h2>Recovery Facilitators</h2>
-                </div>
-                <div class="form-cont">
-                    <form [formGroup]="form1" (ngSubmit)="onSubmit()">
-                        <div class="form1-grid">
-                            <!-- Row 1 -->
-                            <div class="grid-item">
-                                <label for="compName" class="form-label">Employee Code<span
-                                        class="required">*</span></label>
-                                <input type="text" class="form-control" id="compName" formControlName="compName">
-                            </div>
-                            <div class="grid-item">
-                                <label for="company" class="form-label">Company<span class="required">*</span></label>
-                                <select class="form-control" formControlName="company" id="company">
-                                    <option value="">Select Company</option>
-                                    <option value="company1">BRPL</option>
-                                    <option value="company2">BYPL</option>
-                                </select>
-
-                            </div>
-                            <div class="grid-item">
-
-                                <label for="Circle" class="form-label">Circle<span class="required">*</span></label>
-                                <select class="form-control" formControlName="Circle" id="Circle">
-                                    <option value="">Select Circle</option>
-                                    <option value="Circle1">Circle 1</option>
-                                    <option value="Circle2">Circle 2</option>
-                                </select>
-                            </div>
-
-                            <!-- Row 2 -->
-                            <div class="grid-item">
-                                <label for="division" class="form-label">Division<span class="required">*</span></label>
-                                <select class="form-control" formControlName="division" id="division">
-                                    <option value="">Select Division</option>
-                                    <option value="division1">Division 1</option>
-                                    <option value="division2">Division 2</option>
-                                </select>
-
-                            </div>
-
-                            <div class="grid-item">
-                                <label for="accClass" class="form-label">Account Class<span
-                                        class="required">*</span></label>
-                                <select class="form-control" formControlName="accClass" id="accClass">
-                                    <option value="">Select Class</option>
-                                    <option value="accClass1">SLCC</option>
-                                    <option value="accClass2">None</option>
-                                </select>
-                            </div>
-
-                            <div class="grid-item">
-                                <label for="criteria" class="form-label">Recovery Facilitator Criteria<span
-                                        class="required">*</span></label>
-                                <select class="form-control" formControlName="criteria" id="criteria">
-                                    <option value="">Select Criteria</option>
-                                    <option value="criteria1">In House</option>
-                                    <option value="criteria2">In Agency</option>
-                                </select>
-                            </div>
-
-                            <!-- Border row -->
-                            <div class="grid-border"></div>
-
-                            <!-- Row 3 -->
-                            <div class="grid-item">
-                                <label for="facilitatorName" class="form-label">Facilitator name<span
-                                        class="required">*</span></label>
-                                <input type="text" class="form-control" id="facilitatorName"
-                                    formControlName="facilitatorName">
-                            </div>
-                            <div class="grid-item">
-                                <label for="joiningDate" class="form-label">Date of joining<span
-                                        class="required">*</span></label>
-                                <input type="date" class="form-control" id="joiningDate" formControlName="joiningDate">
-                            </div>
-                            <div class="grid-item grid-merge">
-                                <label for="remarks" class="form-label">Address<span class="required">*</span></label>
-                                <textarea id="remarks" formControlName="remarks" rows="7"></textarea>
-                            </div>
-
-                            <!-- Row 4 -->
-                            <div class="grid-item">
-                                <label for="reportingPerson" class="form-label">Reporting Person(L1)<span
-                                        class="required">*</span></label>
-                                <input type="text" class="form-control" id="reportingPerson"
-                                    formControlName="reportingPerson">
-
-                            </div>
-                            <div class="grid-item">
-                                <label for="mobileNumber" class="form-label">Mobile number<span
-                                        class="required">*</span></label>
-                                <input type="text" class="form-control" id="mobileNumber"
-                                    formControlName="mobileNumber">
-                            </div>
-
-                            <!-- Button row -->
-                            <div class="grid-buttons">
-                                <div class="left-buttons">
-                                    <button type="submit">Submit</button>
-                                    <button type="button" (click)="onReset()">Refresh</button>
-                                </div>
-                                <div class="right-button">
-                                    <button type="button">Close</button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-
-            <!-- FORM 2 -->
-
-
-            <div *ngIf="currentView === 'form2'" class="form-wrapper">
-                <div class="form-heading">
-                    <h2>Role Allotment and Assignment</h2>
-                </div>
-                <div class="form-cont">
-                    <form [formGroup]="form2" (ngSubmit)="onSubmitForm2()">
-                        <div class="form1-grid">
-                            <!-- Row 1 -->
-                            <div class="grid-item">
-                                <label for="employeeId" class="form-label">Employee ID<span
-                                        class="required">*</span></label>
-                                <input type="text" class="form-control" id="employeeId" formControlName="employeeId"
-                                    required />
-                            </div>
-
-                            <div class="grid-item">
-                                <label for="employeeName" class="form-label">Employee Name<span
-                                        class="required">*</span></label>
-                                <input type="text" class="form-control" id="employeeName" formControlName="employeeName"
-                                    readonly />
-                            </div>
-
-                            <div class="grid-item">
-                                <label for="role" class="form-label">Role<span class="required">*</span></label>
-                                <select class="form-control" id="role" formControlName="role" required>
-                                    <option value="defaulterRecoveryOfficer">Defaulter Recovery Officer</option>
-                                    <option value="fieldRecoveryAgent">Field Recovery Agent</option>
-                                    <option value="customerRelationsOfficer">Customer Relations Officer</option>
-                                    <option value="billVerificationOfficer">Bill Verification Officer</option>
-                                    <option value="dataEntrySpecialist">Data Entry Specialist</option>
-                                    <option value="recoverySupervisor">Recovery Supervisor</option>
-                                </select>
-                            </div>
-
-
-                            <!-- Row 2 -->
-                            <div class="grid-item">
-                                <label for="assignedWork" class="form-label">Assigned Work<span
-                                        class="required">*</span></label>
-                                <select class="form-control" id="assignedWork" formControlName="assignedWork" required>
-                                    <option value="defaulterIdentification">Defaulter Identification</option>
-                                    <option value="billCollection">Bill Collection</option>
-                                    <option value="paymentNegotiation">Payment Negotiation</option>
-                                    <option value="legalActionPreparation">Legal Action Preparation</option>
-                                    <option value="paymentUpdate">Payment Update</option>
-                                    <option value="defaulterFollowUp">Defaulter Follow-Up</option>
-                                </select>
-                            </div>
-
-                            <div class="grid-item">
-                                <label for="startDate" class="form-label">Start Date<span
-                                        class="required">*</span></label>
-                                <input type="date" class="form-control" id="startDate" formControlName="startDate"
-                                    required />
-                            </div>
-                            <div class="grid-item">
-                                <label for="endDate" class="form-label">End Date<span class="required">*</span></label>
-                                <input type="date" class="form-control" id="endDate" formControlName="endDate"
-                                    required />
-                            </div>
-
-                            <!-- Button row -->
-                            <div class="grid-buttons">
-                                <div class="left-buttons">
-                                    <button type="submit">Assign Role</button>
-                                    <button type="button" (click)="onResetForm2()">Reset</button>
-                                </div>
-                                <div class="right-button">
-                                    <button type="button">Close</button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-
-            <!-- FORM 3 -->
-
-
-            <div *ngIf="currentView === 'form3'" class="form-wrapper">
-                <div class="form-heading">
-                    <h2>Recovery Report and Update</h2>
-                </div>
-                <div class="form-cont">
-                    <form [formGroup]="form3" (ngSubmit)="onSubmitForm3()">
-                        <div class="form1-grid">
-                            <!-- Row 1 -->
-                            <div class="grid-item">
-                                <label for="caNumber" class="form-label">CA Number<span
-                                        class="required">*</span></label>
-                                <input type="text" class="form-control" id="caNumber" formControlName="caNumber"
-                                    required />
-                            </div>
-                            <div class="grid-item">
-                                <label for="facilitatorId" class="form-label">Employee ID (Facilitator)<span
-                                        class="required">*</span></label>
-                                <input type="text" class="form-control" id="facilitatorId"
-                                    formControlName="facilitatorId" required />
-                            </div>
-                            <div class="grid-item">
-                                <label for="paymentAmount" class="form-label">Payment Amount Collected<span
-                                        class="required">*</span></label>
-                                <input type="number" class="form-control" id="paymentAmount"
-                                    formControlName="paymentAmount" required />
-                            </div>
-
-                            <!-- Row 2 -->
-                            <div class="grid-item">
-                                <label for="paymentMethod" class="form-label">Payment Method<span
-                                        class="required">*</span></label>
-                                <select class="form-control" id="paymentMethod" formControlName="paymentMethod"
-                                    required>
-                                    <option value="">Select Method</option>
-                                    <option value="cash">Cash</option>
-                                    <option value="bankTransfer">Bank Transfer</option>
-                                    <option value="onlinePayment">Online Payment</option>
-                                    <option value="cheque">Cheque</option>
-                                    <option value="other">Other</option>
-                                </select>
-                            </div>
-                            <div class="grid-item">
-                                <label for="paymentDate" class="form-label">Payment Date<span
-                                        class="required">*</span></label>
-                                <input type="date" class="form-control" id="paymentDate" formControlName="paymentDate"
-                                    required />
-                            </div>
-                            <div class="grid-item">
-                                <label for="outstandingAmount" class="form-label">Outstanding Amount<span
-                                        class="required">*</span></label>
-                                <input type="number" class="form-control" id="outstandingAmount"
-                                    formControlName="outstandingAmount" required />
-                            </div>
-
-                            <!-- Border row -->
-                            <div class="grid-border"></div>
-
-                            <!-- Row 3 -->
-                            <div class="grid-item">
-                                <label for="workStatus" class="form-label">Work Status<span
-                                        class="required">*</span></label>
-                                <select class="form-control" id="workStatus" formControlName="workStatus" required>
-                                    <option value="">Select Status</option>
-                                    <option value="pending">Pending</option>
-                                    <option value="inProgress">In Progress</option>
-                                    <option value="completed">Completed</option>
-                                    <option value="delayed">Delayed</option>
-                                </select>
-                            </div>
-                            <div class="grid-item">
-                                <label for="nextFollowUp" class="form-label">Next Follow-up Date<span
-                                        class="required">*</span></label>
-                                <input type="date" class="form-control" id="nextFollowUp" formControlName="nextFollowUp"
-                                    required />
-                            </div>
-                            <div class="grid-item grid-merge">
-                                <label for="remarks" class="form-label">Remarks/Notes</label>
-                                <textarea id="remarks" formControlName="remarks" rows="7"></textarea>
-                            </div>
-
-                            <!-- Row 4 -->
-                            <div class="grid-item">
-                                <label for="actionTaken" class="form-label">Action Taken<span
-                                        class="required">*</span></label>
-                                <select class="form-control" id="actionTaken" formControlName="actionTaken" required>
-                                    <option value="">Select Action</option>
-                                    <option value="emailReminder">Email Reminder Sent</option>
-                                    <option value="fieldVisit">Field Visit</option>
-                                    <option value="paymentPlanOffered">Payment Plan Offered</option>
-                                    <option value="legalActionInitiated">Legal Action Initiated</option>
-                                    <option value="none">None</option>
-                                </select>
-                            </div>
-                            <div class="grid-item">
-                                <label for="finalStatus" class="form-label">Final Status<span
-                                        class="required">*</span></label>
-                                <select class="form-control" id="finalStatus" formControlName="finalStatus" required>
-                                    <option value="">Select Status</option>
-                                    <option value="paidInFull">Paid in Full</option>
-                                    <option value="partialPayment">Partial Payment</option>
-                                    <option value="pending">Pending</option>
-                                    <option value="legalAction">Legal Action</option>
-                                    <option value="writeOff">Write-Off</option>
-                                </select>
-                            </div>
-
-                            <!-- checkbox -->
-                            <div class="penalty-check">
-                                <label for="penaltyApplied" class="form-label">Penalty or Interest Applied:<span
-                                        class="required">*</span></label>
-                                <input type="checkbox" class="form-control-checkbox" id="penaltyApplied"
-                                    formControlName="penaltyApplied" />
-                            </div>
-
-                            <!-- Button row -->
-                            <div class="grid-buttons">
-                                <div class="left-buttons">
-                                    <button type="submit">Update Recovery Info</button>
-                                    <button type="button" (click)="onResetForm3()">Reset</button>
-                                </div>
-                                <div class="right-button">
-                                    <button type="button">Close</button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-
-
-
-
-
-
-
-
-            <!-- FORM 4 -->
-
-            <div *ngIf="currentView === 'form4'" class="form-wrapper">
-                <div class="form-heading">
-                    <h2>Action Taken & Report</h2>
-                </div>
-                <div class="form-cont">
-                    <form (ngSubmit)="filterReports(ca.value, date.value, facilitator.value)">
-                        <div class="form4-grid">
-                            <!-- Row 1 -->
-                            <div class="grid-item">
-                                <label for="ca" class="form-label">CA Number</label>
-                                <input type="text" id="ca" class="form-control" #ca placeholder="Enter CA Number" />
-                            </div>
-            
-                            <div class="grid-item">
-                                <label for="date" class="form-label">Date</label>
-                                <input type="date" id="date" class="form-control" #date />
-                            </div>
-            
-                            <div class="grid-item">
-                                <label for="facilitator" class="form-label">Facilitator ID</label>
-                                <input type="text" id="facilitator" class="form-control" #facilitator placeholder="Facilitator ID" />
-                            </div>
-            
-                            <!-- Button Row -->
-                            <div class="grid-buttons">
-                                <div class="left-buttons">
-                                    <button type="submit">Filter</button>
-                                    <button type="button" (click)="resetFilters()">Reset</button>
-                                </div>
-                                <div class="right-button">
-                                    <button type="button">Close</button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-
-                    <div class="table-container">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>CA Number</th>
-                                    <th>Date</th>
-                                    <th>Action Taken</th>
-                                    <th>Facilitator ID</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let report of filteredReports">
-                                    <td>{{ report.caNumber }}</td>
-                                    <td>{{ report.date }}</td>
-                                    <td>{{ report.action }}</td>
-                                    <td>{{ report.facilitator }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <p *ngIf="filteredReports.length === 0">No records found.</p>
-                    </div>
-                </div>
-
-            </div>
-
-
-            <!-- FORM 5  -->
-
-            <div *ngIf="currentView === 'form5'">
-                <div class="form-heading">
-                    <h2>Customer Care Services</h2>
-                </div>
-                <div class="form-cont" id="form-5">
-                    <form (ngSubmit)="submitForm()" #customerCareForm="ngForm">
-                        <div class="form5-grid">
-                          <!-- Row 1: Two half-width inputs -->
-                          <div class="grid-item">
-                            <label for="customerId" class="form-label">Customer ID</label>
-                            <input type="text" id="customerId" name="customerId" class="form-control"
-                              [(ngModel)]="formData.customerId" placeholder="Enter Customer ID" required />
-                          </div>
-                      
-                          <div class="grid-item">
-                            <label for="issueType" class="form-label">Issue Type</label>
-                            <select id="issueType" name="issueType" class="form-control"
-                              [(ngModel)]="formData.issueType" required>
-                              <option value="" disabled>Select issue</option>
-                              <option>Billing Issue</option>
-                              <option>Service Interruption</option>
-                              <option>Wrong CA Details</option>
-                              <option>Other</option>
-                            </select>
-                          </div>
-                      
-                          <!-- Row 2: Full width textarea -->
-                          <div class="grid-item description-item">
-                            <label for="description" class="form-label">Description</label>
-                            <textarea id="description" name="description" class="form-control"
-                              [(ngModel)]="formData.description" rows="4" placeholder="Describe the issue..." required></textarea>
-                          </div>
-                      
-                          <!-- Row 3: Buttons -->
-                          <div class="grid-buttons">
-                            <div class="left-buttons">
-                              <button type="submit" [disabled]="!customerCareForm.form.valid">Submit</button>
-                              <button type="button" (click)="resetForm()">Reset</button>
-                            </div>
-                            <div class="right-button">
-                              <button type="button" (click)="closeForm()">Close</button>
-                            </div>
-                          </div>
-                        </div>
-                      </form>
-                      
-                      
-                      
-                </div>
-            </div>
-
-
-
-            <!-- REPORT -->
-            <div *ngIf="currentView === 'form6'">
-                <div class="form-heading">
-                  <h2>Recovery Summary Report</h2>
-                </div>
-              
-                <div class="summary-report-grid">
-                  <div class="summary-table-wrapper">
-                    <table class="report-table">
-                      <thead>
-                        <tr>
-                          <th>Zone</th>
-                          <th>Total Defaulters</th>
-                          <th>Recovered Amount</th>
-                          <th>Pending Amount</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr *ngFor="let zone of summaryData">
-                          <td>{{ zone.zoneName }}</td>
-                          <td>{{ zone.totalDefaulters }}</td>
-                          <td>₹{{ zone.recoveredAmount | number }}</td>
-                          <td>₹{{ zone.pendingAmount | number }}</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-              
+            <router-outlet></router-outlet>
         </section>
         <footer class="footer">
             <div>&#64;2024 BSES Delhi. All Rights Reserved.</div>

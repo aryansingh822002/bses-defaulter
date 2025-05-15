@@ -1,0 +1,61 @@
+
+<div class="dash-container">
+    <!-- Top Cards -->
+    <div class="card-row">
+        <div class="card purple">
+            <p>Month</p>
+            <h2>$5,00,000</h2>
+            <p>Total Defaulters</p>
+            <p>10,000</p>
+        </div>
+        <div class="card blue">
+            <p>Collected</p>
+            <h2>$1,00,000</h2>
+            <p>Defaulters Paid</p>
+            <p>800</p>
+        </div>
+        <div class="card dark-blue">
+            <p>Left</p>
+            <h2>$4,00,000</h2>
+            <p>Defaulters Left</p>
+            <p>9,200</p>
+        </div>
+    </div>
+
+    <!-- Growth Chart Section -->
+    <div class="growth-card">
+        <h3>Present State</h3>
+
+        <div class="chart-row">
+            <div class="chart-box">
+                <h3>Defaulters & Total</h3>
+                <canvas baseChart [data]="barChartData" [type]="barChartType"></canvas>
+            </div>
+
+            <div class="chart-box pie-chart-box">
+                <h3>Collections</h3>
+                <canvas baseChart [data]="pieChartData" [type]="pieChartType">
+                </canvas>
+            </div>
+
+            <div class="chart-box">
+                <h3>Progress</h3>
+                <canvas baseChart [data]="lineChartData" [type]="lineChartType"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popular Stocks -->
+    <!-- <div class="stocks-card">
+                      <h3>Popular Stocks</h3>
+                      <div class="stock-list">
+                        <div *ngFor="let stock of stocks" class="stock-item">
+                          <p>{{ stock.name }}</p>
+                          <span [class.green]="stock.profit" [class.red]="!stock.profit">
+                            ${{ stock.value }} 
+                            <i [class]="stock.profit ? 'arrow-up' : 'arrow-down'"></i>
+                          </span>
+                        </div>
+                      </div>
+                    </div> -->
+</div>

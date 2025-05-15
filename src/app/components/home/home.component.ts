@@ -1,5 +1,5 @@
 import { Component, HostListener, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { NgChartsModule } from 'ng2-charts';
 import {
@@ -13,16 +13,35 @@ import { FormsModule, ReactiveFormsModule , FormBuilder, FormGroup, Validators} 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, NgChartsModule,FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, NgChartsModule,FormsModule, ReactiveFormsModule, RouterOutlet,RouterLink, RouterLinkActive],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit{
+  masterMenuExpanded = false;
+  customerCareMenuExpanded = false;
+  sidebarExpanded = false;
+  
+  showLogout = false;
+  
+
+  toggleMasterMenu() {
+    this.masterMenuExpanded = !this.masterMenuExpanded;
+  }
+
+  toggleCustomerCareMenu() {
+    this.customerCareMenuExpanded = !this.customerCareMenuExpanded;
+}
+toggleSidebar() {
+  this.sidebarExpanded = !this.sidebarExpanded;
+}
+  
+
+
   form1!: FormGroup;
   form2!: FormGroup;
   form3!: FormGroup;
   currentView = 'home';
-  showLogout = false;
 
   constructor(private router: Router,private fb: FormBuilder) {}
 
@@ -137,129 +156,12 @@ export class HomeComponent implements OnInit{
     this.currentView = view;
   }
 
-  @HostListener('document:click', ['$event'])
-  onDocumentClick(event: MouseEvent) {
-    const clickedInside = (event.target as HTMLElement).closest('.avatar-wrapper');
-    if (!clickedInside) {
-      this.showLogout = false;
-    }
-  }
-  onClick(event: MouseEvent): void {
-    const target = event.target as HTMLElement;
-    this.showLogout = target.classList.contains('user-icon');
-  }
-
-  // stocks = [
-  //   { name: 'Bajaj Finery', value: 1839.0, profit: true },
-  //   { name: 'TTML', value: 100.0, profit: false },
-  //   { name: 'Reliance', value: 200.0, profit: true },
-  //   { name: 'ATGL', value: 189.0, profit: false },
-  //   { name: 'Stolon', value: 210.0, profit: true },
-  // ];
-
-
-  // Bar Chart
-  barChartType: ChartType = 'bar';
-  barChartData: ChartConfiguration<'bar'>['data'] = {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
-    datasets: [
-      {
-        label: 'Defaulters',
-        data: [1000, 1200, 950, 1100, 1020],
-        backgroundColor: '#6a11cb',
-      },
-      {
-        label: 'Total Amount ($)',
-        data: [20000, 22000, 21000, 19500, 20500],
-        backgroundColor: '#2575fc',
-      },
-    ],
-  };
-
-  // Pie Chart
-  pieChartType: ChartType = 'pie';
-  pieChartData = {
-    labels: ['Collected', 'Left'],
-    datasets: [
-      {
-        data: [96100, 203000 - 96100],
-        backgroundColor: ['#36d1dc', '#ff6384'],
-      },
-    ],
-  };
-
-  // Line Chart
-  lineChartType: ChartType = 'line';
-  lineChartData: ChartConfiguration<'line'>['data'] = {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
-    datasets: [
-      {
-        label: 'Progress (%)',
-        data: [20, 40, 60, 80, 95],
-        borderColor: '#36d1dc',
-        tension: 0.3,
-      },
-    ],
-  };
+ 
 
 
 
 
 
-  
-
-
-
-
-  // action taken and reports
-  // filterDate: string = '';
-  // reports = [
-  //   {
-  //     caNumber: 'CA12345',
-  //     facilitatorId: 'EMP001',
-  //     actionTaken: 'Field Visit',
-  //     date: new Date('2025-04-20'),
-  //     remarks: 'Customer promised to pay by 25th',
-  //     status: 'Pending'
-  //   },
-  //   {
-  //     caNumber: 'CA23456',
-  //     facilitatorId: 'EMP002',
-  //     actionTaken: 'Legal Action Initiated',
-  //     date: new Date('2025-04-18'),
-  //     remarks: 'Payment overdue, legal notice issued',
-  //     status: 'Legal'
-  //   },
-  //   {
-  //     caNumber: 'CA34567',
-  //     facilitatorId: 'EMP003',
-  //     actionTaken: 'Payment Plan Offered',
-  //     date: new Date('2025-04-15'),
-  //     remarks: 'Customer accepted EMI option',
-  //     status: 'Paid'
-  //   }
-  // ];
-
-  // filteredReports = this.reports;
-
-  // filterReports() {
-  //   if (!this.filterDate) {
-  //     this.filteredReports = this.reports;
-  //   } else {
-  //     this.filteredReports = this.reports.filter(report =>
-  //       new Date(report.date).toDateString() === new Date(this.filterDate).toDateString()
-  //     );
-  //   }
-  // }
-
-  // statusClass(status: string): string {
-  //   switch (status.toLowerCase()) {
-  //     case 'paid': return 'paid';
-  //     case 'pending': return 'pending';
-  //     case 'legal': return 'legal';
-  //     default: return '';
-  //   }
-  // }
 
   reports = [
     { caNumber: '123456789', date: '2025-04-24', action: 'Notice Issued', facilitator: 'EMP001' },
