@@ -1,1 +1,166 @@
-<p>user-master works!</p>
+<div class="form-wrapper">
+    <div class="form-heading">
+        <h2>User Master</h2>
+    </div>
+    <div class="form-cont">
+        <!-- Main User Form -->
+        <form [formGroup]="userForm" (ngSubmit)="onSubmit()" *ngIf="!resetPasswordMode">
+            <div class="form1-grid">
+                <!-- Row 1 (User ID, Username, Role) -->
+                <div class="grid-item">
+                    <label class="form-label">User ID<span class="required">*</span></label>
+                    <input type="text" class="form-control" formControlName="userId" placeholder="Enter user ID">
+                </div>
+                <div class="grid-item">
+                    <label class="form-label">Username<span class="required">*</span></label>
+                    <input type="text" class="form-control" formControlName="username" placeholder="Enter username">
+                </div>
+                <div class="grid-item">
+                    <label class="form-label">Role<span class="required">*</span></label>
+                    <select class="form-control" formControlName="role">
+                        <option value="">Select Role</option>
+                        @for (role of roles; track role.roleId) {
+                        <option [value]="role.role">{{role.role}}</option>
+                        }
+                    </select>
+                </div>
+
+                <!-- Row 2 (Division, Account Class) -->
+                <div class="grid-item">
+                    <label class="form-label">Division<span class="required">*</span></label>
+                    <select class="form-control" formControlName="division">
+                        <option value="">Select Division</option>
+                        <option value="Division 1">Division 1</option>
+                        <option value="Division 2">Division 2</option>
+                        <option value="Division 3">Division 3</option>
+                        <option value="Division 4">Division 4</option>
+                    </select>
+                </div>
+                <div class="grid-item">
+                    <label class="form-label">Account Class<span class="required">*</span></label>
+                    <select class="form-control" formControlName="accountClass">
+                        <option value="">Select Account Class</option>
+                        <option value="SLCC">SLCC</option>
+                        <option value="OTHERS">Others</option>
+                    </select>
+                </div>
+
+                <!-- Buttons -->
+                <div class="grid-buttons">
+                    <div class="left-buttons">
+                        <button type="submit">Save</button>
+                        <button type="button" (click)="onReset()">Refresh</button>
+                        <button type="button" class="reset-password-btn" (click)="enableResetPassword()">Reset
+                            Password</button>
+                    </div>
+                    <div class="right-button">
+                        <button type="button" (click)="onClose()">Close</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <!-- Reset Password Form -->
+        <form [formGroup]="passwordForm" (ngSubmit)="onPasswordReset()" *ngIf="resetPasswordMode">
+            <div class="form1-grid">
+                <!-- Row 1 (Username, Old Password) -->
+                <div class="grid-item">
+                    <label class="form-label">Username<span class="required">*</span></label>
+                    <input type="text" class="form-control" formControlName="username" [value]="selectedUser?.username"
+                        readonly>
+                </div>
+                <div class="grid-item">
+                    <label class="form-label">Old Password<span class="required">*</span></label>
+                    <input type="password" class="form-control" formControlName="oldPassword"
+                        placeholder="Enter old password">
+                </div>
+
+                <!-- Row 2 (New Password, Repeat Password) -->
+                <div class="grid-item">
+                    <label class="form-label">New Password<span class="required">*</span></label>
+                    <input type="password" class="form-control" formControlName="newPassword"
+                        placeholder="Enter new password">
+                    <div class="password-strength" [class.weak]="passwordStrength === 'weak'"
+                        [class.medium]="passwordStrength === 'medium'" [class.strong]="passwordStrength === 'strong'">
+                        Password Strength: {{passwordStrength | uppercase}}
+                    </div>
+                </div>
+                <div class="grid-item">
+                    <label class="form-label">Repeat Password<span class="required">*</span></label>
+                    <input type="password" class="form-control" formControlName="repeatPassword"
+                        placeholder="Repeat new password">
+                    <div class="password-match"
+                        *ngIf="passwordForm.get('newPassword')?.value && passwordForm.get('repeatPassword')?.value">
+                        {{passwordForm.get('newPassword')?.value === passwordForm.get('repeatPassword')?.value ? '✓
+                        Passwords match' : '✗ Passwords do not match'}}
+                    </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="grid-buttons">
+                    <div class="left-buttons">
+                        <button type="submit">Save</button>
+                        <button type="button" (click)="onReset()">Refresh</button>
+                    </div>
+                    <div class="right-button">
+                        <button type="button" (click)="cancelResetPassword()">Close</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <!-- User Table Section -->
+        <div class="user-table-section">
+            <button type="button" class="show-table-btn" (click)="toggleUserTable()">
+                {{ showUserTable ? 'Hide User Table' : 'Show User Table' }}
+            </button>
+
+            @if (showUserTable) {
+            <div class="user-table-container">
+                <table class="user-table">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>User ID</th>
+                            <th>Username</th>
+                            <th>Division</th>
+                            <th>Account Class</th>
+                            <th>Role</th>
+                            <th>Reset Password</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (user of users; track user.userId; let i = $index) {
+                        <tr>
+                            <td class="action-buttons">
+                                <button class="icon-button edit-btn" (click)="editUser(user)" title="Edit">✏️</button>
+                                <button class="icon-button delete-btn" (click)="deleteUser(user.userId)"
+                                    title="Delete">🗑️</button>
+                            </td>
+                            <td>{{ user.userId }}</td>
+                            <td>{{ user.username }}</td>
+                            <td>{{ user.division }}</td>
+                            <td>{{ user.accountClass }}</td>
+                            <td>{{ user.role }}</td>
+                            <td class="action-buttons">
+                                <button class="icon-button key-btn" (click)="initiatePasswordReset(user)"
+                                    title="Reset Password">🔑</button>
+                            </td>
+                            <td>
+                                <label class="switch">
+                                    <input type="checkbox" [(ngModel)]="user.active"
+                                        [ngModelOptions]="{standalone: true}" (change)="toggleUserStatus(user)">
+                                    <span class="slider round"></span>
+                                    <span class="status-text">{{ user.active ? 'Active' : 'Inactive' }}</span>
+                                </label>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            }
+        </div>
+    </div>
+</div>

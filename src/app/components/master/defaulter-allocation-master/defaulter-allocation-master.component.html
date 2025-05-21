@@ -1,1 +1,198 @@
-<p>defaulter-allocation-master works!</p>
+<div class="form-wrapper">
+    <div class="form-heading">
+        <h2>Defaulter Allocation Master</h2>
+    </div>
+    <div class="form-cont">
+        <form [formGroup]="allocationForm" (ngSubmit)="onSubmit()">
+            <div class="form1-grid">
+                <!-- Row 1 (Company, Circle, Division) -->
+                <div class="grid-item">
+                    <label class="form-label">Company<span class="required">*</span></label>
+                    <select class="form-control" formControlName="company" (change)="onCompanyChange()">
+                        <option value="">Select Company</option>
+                        @for (company of companies; track company.code) {
+                        <option [value]="company.code">{{company.name}}</option>
+                        }
+                    </select>
+                </div>
+                <div class="grid-item">
+                    <label class="form-label">Circle<span class="required">*</span></label>
+                    <select class="form-control" formControlName="circle">
+                        <option value="">Select Circle</option>
+                        @for (circle of circles; track circle.code) {
+                        <option [value]="circle.code">{{circle.name}}</option>
+                        }
+                    </select>
+                </div>
+                <div class="grid-item">
+                    <label class="form-label">Division<span class="required">*</span></label>
+                    <select class="form-control" formControlName="division">
+                        <option value="">Select Division</option>
+                        @for (division of divisions; track division.code) {
+                        <option [value]="division.code">{{division.name}}</option>
+                        }
+                    </select>
+                </div>
+
+                <!-- Row 2 (Current Month) -->
+                <div class="grid-item" style="grid-column: span 3">
+                    <label class="form-label">Current Month</label>
+                    <div class="current-month">{{ currentMonth }}</div>
+                </div>
+
+                <!-- Row 3 - Defaulter Allocation Table -->
+                <div class="grid-item" style="grid-column: span 3">
+                    <div class="allocation-table-container">
+                        <table class="allocation-table">
+                            <thead>
+                                <tr>
+                                    <th>Amount From</th>
+                                    <th>Amount To</th>
+                                    <th>Days From</th>
+                                    <th>Days To</th>
+                                    <th>Allocation Type</th>
+                                    <th>Credit From</th>
+                                    <th>Credit To</th>
+                                    <th>Priority</th>
+                                    <th>Meter No.</th>
+                                    <th>Soft Conn.</th>
+                                    <th>Consumer Status</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of allocationItems; let i = index">
+                                    <td>
+                                        <input type="number" class="form-control" [(ngModel)]="item.amountFrom"
+                                            [ngModelOptions]="{standalone: true}" min="0" step="0.01" />
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" [(ngModel)]="item.amountTo"
+                                            [ngModelOptions]="{standalone: true}" min="0" step="0.01" />
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" [(ngModel)]="item.daysFrom"
+                                            [ngModelOptions]="{standalone: true}" min="0" />
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" [(ngModel)]="item.daysTo"
+                                            [ngModelOptions]="{standalone: true}" min="0" />
+                                    </td>
+                                    <td>
+                                        <select class="form-control" [(ngModel)]="item.allocationType"
+                                            [ngModelOptions]="{standalone: true}">
+                                            <option value="">-- Select --</option>
+                                            <option value="ON_FIELD">On Field</option>
+                                            <option value="BY_COMPLAINT">By Complaint</option>
+                                            <option value="BY_WEBSITE">By Website</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" [(ngModel)]="item.creditFrom"
+                                            [ngModelOptions]="{standalone: true}" min="0" step="0.01" />
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" [(ngModel)]="item.creditTo"
+                                            [ngModelOptions]="{standalone: true}" min="0" step="0.01" />
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" [(ngModel)]="item.priority"
+                                            [ngModelOptions]="{standalone: true}" min="1" max="10" />
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" [(ngModel)]="item.meterNo"
+                                            [ngModelOptions]="{standalone: true}" />
+                                    </td>
+                                    <td>
+                                        <select class="form-control" [(ngModel)]="item.softConn"
+                                            [ngModelOptions]="{standalone: true}">
+                                            <option value="YES">Yes</option>
+                                            <option value="NO">No</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" [(ngModel)]="item.consumerStatus"
+                                            [ngModelOptions]="{standalone: true}" />
+                                    </td>
+                                    <td class="action-buttons">
+                                        <button type="button" class="icon-button delete-btn" 
+                                                (click)="removeAllocationItem(i)" title="Delete">🗑️</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="table-action-buttons">
+            <button type="button" class="add-row-btn" (click)="addAllocationItem()">+ Add Row</button>
+            <button type="button" class="delete-row-btn" (click)="removeLastAllocationItem()">- Delete Row</button>
+        </div>
+                    </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="grid-buttons">
+                    <div class="left-buttons">
+                        <button type="submit">Save</button>
+                        <button type="button" (click)="onReset()">Refresh</button>
+                    </div>
+                    <div class="right-button">
+                        <button type="button" (click)="onClose()">Close</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <!-- Previous History Section -->
+        <div class="previous-history">
+            <h4>Defaulter Allocation History</h4>
+    <div class="history-controls">
+        <span>View allocation for</span>
+        <select [(ngModel)]="selectedMonth">
+            @for (month of months; track month.value) {
+            <option [value]="month.value">{{ month.name }}</option>
+            }
+        </select>
+        <select [(ngModel)]="selectedYear">
+            @for (year of years; track year) {
+            <option [value]="year">{{ year }}</option>
+            }
+        </select>
+        <button type="button" class="view-btn" (click)="loadHistory()">View</button>
+        <button type="button" class="hide-btn" (click)="hideHistory()">Hide</button>
+    </div>
+            
+            @if (showHistoryTable) {
+            <div class="history-table-container">
+                <table class="history-table">
+                    <thead>
+                        <tr>
+                            <th>Company</th>
+                            <th>Circle</th>
+                            <th>Division</th>
+                            <th>Month</th>
+                            <th>Year</th>
+                            <th>Created On</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (history of filteredHistory; track history.id) {
+                        <tr>
+                            <td>{{ getCompanyName(history.company) }}</td>
+                            <td>{{ getCircleName(history.circle) }}</td>
+                            <td>{{ getDivisionName(history.division) }}</td>
+                            <td>{{ getMonthName(history.month) }}</td>
+                            <td>{{ history.year }}</td>
+                            <td>{{ history.createdOn | date:'dd/MM/yyyy' }}</td>
+                            <td class="action-buttons">
+                                <button type="button" class="icon-button delete-btn" 
+                                        (click)="deleteHistory(history)" title="Delete">🗑️</button>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            }
+        </div>
+    </div>
+</div>

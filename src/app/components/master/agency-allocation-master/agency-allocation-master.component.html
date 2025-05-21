@@ -1,1 +1,228 @@
-<p>agency-allocation-master works!</p>
+<!-- agency-allocation-master.component.html -->
+<div class="form-wrapper">
+    <div class="form-heading">
+        <h2>Agency Allocation Master</h2>
+    </div>
+    <div class="form-cont">
+        <form [formGroup]="allocationForm" (ngSubmit)="onSubmit()">
+            <div class="form1-grid">
+                <!-- Row 1 (Company, Circle, Division) -->
+                <div class="grid-item">
+                    <label class="form-label">Company<span class="required">*</span></label>
+                    <select class="form-control" formControlName="company">
+                        <option value="">Select Company</option>
+                        @for (company of companies; track company.code) {
+                        <option [value]="company.code">{{company.name}}</option>
+                        }
+                    </select>
+                </div>
+                <div class="grid-item">
+                    <label class="form-label">Circle<span class="required">*</span></label>
+                    <select class="form-control" formControlName="circle">
+                        <option value="">Select Circle</option>
+                        @for (circle of circles; track circle.code) {
+                        <option [value]="circle.code">{{circle.name}}</option>
+                        }
+                    </select>
+                </div>
+                <div class="grid-item">
+                    <label class="form-label">Division<span class="required">*</span></label>
+                    <select class="form-control" formControlName="division">
+                        <option value="">Select Division</option>
+                        @for (division of divisions; track division.code) {
+                        <option [value]="division.code">{{division.name}}</option>
+                        }
+                    </select>
+                </div>
+
+                <!-- Row 2 (Allocation Criteria, Period From, Period To) -->
+                <div class="grid-item">
+                    <label class="form-label">Allocation Criteria<span class="required">*</span></label>
+                    <div class="radio-group">
+                        <label>
+                            <input type="radio" formControlName="allocationCriteria" value="DEFAULT_AMOUNT" />
+                            Default Amount
+                        </label>
+                        <label>
+                            <input type="radio" formControlName="allocationCriteria" value="RUNNING_BALANCE" />
+                            Running Balance
+                        </label>
+                    </div>
+                </div>
+                <div class="grid-item">
+                    <label class="form-label">Period From<span class="required">*</span></label>
+                    <input type="date" class="form-control" formControlName="periodFrom" />
+                </div>
+                <div class="grid-item">
+                    <label class="form-label">Period To<span class="required">*</span></label>
+                    <input type="date" class="form-control" formControlName="periodTo" />
+                </div>
+
+                <!-- Row 3 (Current Month) -->
+                <div class="grid-item" style="grid-column: span 3">
+                    <label class="form-label">Current Month</label>
+                    <div class="current-month">{{ currentMonth }}</div>
+                </div>
+
+                
+                <!-- Row 4 - Allocation Table -->
+                <div class="grid-item" style="grid-column: span 3">
+                    <div class="allocation-table-container">
+                        <table class="allocation-table">
+                            <thead>
+                                <tr>
+                                    <th>Amount From</th>
+                                    <th>Amount To</th>
+                                    <th>Comm. Rate</th>
+                                    <th>Comm. Over & Above</th>
+                                    <th>Incentive%</th>
+                                    <th>Incentive Rate</th>
+                                    <th>Penalty%</th>
+                                    <th>Penalty Rate</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of allocationItems; let i = index">
+                                    <td>
+                                        <input type="number" class="form-control" [(ngModel)]="item.amountFrom"
+                                            [ngModelOptions]="{standalone: true}" min="0" step="0.01" />
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" [(ngModel)]="item.amountTo"
+                                            [ngModelOptions]="{standalone: true}" min="0" step="0.01" />
+                                    </td>
+                                    <td>
+                                        <select class="form-control" [(ngModel)]="item.commRate"
+                                            [ngModelOptions]="{standalone: true}">
+                                            <option *ngFor="let rate of commissionRates" [value]="rate.value">
+                                                {{rate.value}}%
+                                            </option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select class="form-control" [(ngModel)]="item.commOverAbove"
+                                            [ngModelOptions]="{standalone: true}">
+                                            <option *ngFor="let coa of commissionOverAbove" [value]="coa.value">
+                                                {{coa.value}}%
+                                            </option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select class="form-control" [(ngModel)]="item.incentivePercent"
+                                            [ngModelOptions]="{standalone: true}">
+                                            <option *ngFor="let ip of incentivePercents" [value]="ip.value">
+                                                {{ip.value}}%
+                                            </option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select class="form-control" [(ngModel)]="item.incentiveRate"
+                                            [ngModelOptions]="{standalone: true}">
+                                            <option *ngFor="let ir of incentiveRates" [value]="ir.value">
+                                                {{ir.value}}%
+                                            </option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select class="form-control" [(ngModel)]="item.penaltyPercent"
+                                            [ngModelOptions]="{standalone: true}">
+                                            <option *ngFor="let pp of penaltyPercents" [value]="pp.value">
+                                                {{pp.value}}%
+                                            </option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select class="form-control" [(ngModel)]="item.penaltyRate"
+                                            [ngModelOptions]="{standalone: true}">
+                                            <option *ngFor="let pr of penaltyRates" [value]="pr.value">
+                                                {{pr.value}}%
+                                            </option>
+                                        </select>
+                                    </td>
+                                    <td class="action-buttons">
+                                        <button class="icon-button delete-btn" (click)="removeAllocationItem(i)"
+                                            title="Delete">🗑️</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="table-action-buttons">
+            <button type="button" class="add-row-btn" (click)="addAllocationItem()">+ Add Row</button>
+            <button type="button" class="delete-row-btn" (click)="removeLastAllocationItem()">- Delete Row</button>
+        </div>
+                    </div>
+                </div>
+
+                <!-- Rest of the template remains same -->
+
+                <!-- Buttons -->
+                <div class="grid-buttons">
+                    <div class="left-buttons">
+                        <button type="submit">Save</button>
+                        <button type="button" (click)="onReset()">Refresh</button>
+                    </div>
+                    <div class="right-button">
+                        <button type="button" (click)="onClose()">Close</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <!-- Previous History Section -->
+        <div class="previous-history">
+            <h4>Allocation History</h4>
+            <div class="history-controls">
+                <span>View allocation for</span>
+                <select [(ngModel)]="selectedMonth">
+                    @for (month of months; track month.value) {
+                    <option [value]="month.value">{{ month.name }}</option>
+                    }
+                </select>
+                <select [(ngModel)]="selectedYear">
+                    @for (year of years; track year) {
+                    <option [value]="year">{{ year }}</option>
+                    }
+                </select>
+                <button type="button" class="view-btn" (click)="loadHistory()">View</button>
+        <button type="button" class="hide-btn" (click)="hideHistory()">Hide</button>
+            </div>
+            
+            @if (showHistoryTable) {
+            <div class="history-table-container">
+                <table class="history-table">
+                    <thead>
+                        <tr>
+                            <th>Company</th>
+                            <th>Circle</th>
+                            <th>Division</th>
+                            <th>Criteria</th>
+                            <th>Period From</th>
+                            <th>Period To</th>
+                            <th>Created On</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (history of filteredHistory; track history.id) {
+                        <tr>
+                            <td>{{ getCompanyName(history.company) }}</td>
+                            <td>{{ getCircleName(history.circle) }}</td>
+                            <td>{{ getDivisionName(history.division) }}</td>
+                            <td>{{ history.allocationCriteria === 'DEFAULT_AMOUNT' ? 'Default Amount' : 'Running Balance' }}</td>
+                            <td>{{ history.periodFrom | date:'dd/MM/yyyy' }}</td>
+                            <td>{{ history.periodTo | date:'dd/MM/yyyy' }}</td>
+                            <td>{{ history.createdOn | date:'dd/MM/yyyy' }}</td>
+                            <td class="action-buttons">
+                                <button class="icon-button delete-btn" 
+                                        (click)="deleteHistory(history)" title="Delete">🗑️</button>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,320 @@
+/* agency-allocation-master.component.css */
+/* Reuse the same styles from agency-mapping-master */
+.form-wrapper {
+  padding: 0px 20px;
+  font-family: Arial, sans-serif;
+}
+
+.form-heading h2 {
+  margin: 10px 0;
+  font-size: 20px;
+  color: #343a40;
+}
+
+.form1-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #f8f9fa;
+}
+
+.grid-item {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #bbb;
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 4px;
+}
+
+label {
+  font-size: 12px;
+  margin-bottom: 5px;
+}
+
+.required {
+  color: red;
+  margin-left: 5px;
+  font-weight: bold;
+}
+
+.form-control {
+  height: 30px;
+  border-radius: 5px;
+  border: solid lightgray 1px;
+  padding: 0 5px;
+}
+
+.current-month {
+  padding: 5px;
+  font-weight: bold;
+  color: #333;
+}
+
+.radio-group {
+  display: flex;
+  gap: 20px;
+  padding: 5px 0;
+}
+
+.radio-group label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.grid-buttons {
+  grid-column: 1 / span 3;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.left-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.right-button {
+  display: flex;
+  justify-content: flex-end;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 14px;
+  cursor: pointer;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 4px;
+  transition: background-color 0.2s ease-in-out;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.reset-password-btn {
+  background-color: #ffc107;
+  color: #212529;
+}
+
+.reset-password-btn:hover {
+  background-color: #e0a800;
+}
+
+/* User Table Styles */
+.user-table-section {
+  margin-top: 30px;
+}
+
+.show-table-btn {
+  padding: 10px 20px;
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 15px;
+}
+
+.show-table-btn:hover {
+  background-color: #5a6268;
+}
+
+.user-table-container {
+  padding: 10px;
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow-x: auto;
+}
+
+.user-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.user-table th,
+.user-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.user-table th {
+  background-color: #007bff;
+  color: white;
+  font-weight: bold;
+}
+
+.user-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+/* Toggle switch */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 24px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 24px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #28a745;
+}
+
+input:checked + .slider:before {
+  transform: translateX(36px);
+}
+
+.status-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 12px;
+  color: white;
+  width: 100%;
+  text-align: center;
+}
+
+/* Action buttons */
+.action-buttons {
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+  align-items: center;
+}
+
+.icon-button {
+  background: none;
+  border: solid black 1px;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 5px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.edit-btn:hover {
+  background-color: #e2f0fd;
+}
+
+.delete-btn:hover {
+  background-color: #fdecea;
+}
+
+.key-btn {
+  color: #17a2b8;
+  border: solid black 1px;
+}
+
+.key-btn:hover {
+  background-color: #e2f0fd;
+}
+
+/* Password strength indicators */
+.password-strength {
+  margin-top: 5px;
+  font-size: 12px;
+  padding: 3px;
+  border-radius: 3px;
+  text-align: center;
+}
+
+.password-strength.weak {
+  background-color: #ffcccc;
+  color: #cc0000;
+}
+
+.password-strength.medium {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.password-strength.strong {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.password-match {
+  margin-top: 5px;
+  font-size: 12px;
+  color: #28a745;
+}
+
+.password-match.invalid {
+  color: #dc3545;
+}
+
+/* History controls */
+.history-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 15px 0;
+}
+
+.view-btn {
+  padding: 5px 15px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.view-btn:hover {
+  background-color: #218838;
+}
+
+.hide-btn {
+  padding: 5px 15px;
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.hide-btn:hover {
+  background-color: #5a6268;
+}
