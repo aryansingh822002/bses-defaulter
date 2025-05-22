@@ -385,11 +385,24 @@ body {
   background: white;
   border: 1px solid #ccc;
   border-radius: 6px;
-  padding: 1rem;
+  padding: 1rem 1.2rem;
   z-index: 100;
-  min-width: 120px;
+  min-width: 140px;  /* a bit narrower */
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   transition: opacity 0.3s ease;
+
+  display: flex;
+  flex-direction: column;   /* stack vertically */
+  align-items: flex-start;  /* align left */
+  gap: 10px;                /* space between items */
+}
+
+.user-role {
+  font-weight: 600;
+  color: #000000;
+  font-size: 14px;
+  margin: 0;
+  user-select: none;
 }
 
 .logout-btn {
@@ -399,10 +412,70 @@ body {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.25s ease;
+  white-space: nowrap;
 }
 
 .logout-btn:hover {
   background-color: #c0392b;
+}
+
+.logout-confirm-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.logout-confirm-box {
+  background: white;
+  padding: 20px 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  text-align: center;
+  width: 320px; /* fixed width for consistency */
+  user-select: none;
+}
+
+.logout-confirm-box p {
+  font-size: 18px;
+  margin-bottom: 24px;
+  font-weight: 500;
+  color: #000;
+  font-style: normal; /* normal text */
+}
+
+.logout-confirm-box button {
+  margin: 0 10px;
+  padding: 8px 18px;
+  cursor: pointer;
+  font-weight: 600;
+  border-radius: 6px;
+  border: none;
+  min-width: 80px;
+  transition: background-color 0.25s ease;
+}
+
+.logout-confirm-box button:first-child {
+  background-color: #e74c3c; /* red yes */
+  color: white;
+}
+
+.logout-confirm-box button:first-child:hover {
+  background-color: #c0392b;
+}
+
+.logout-confirm-box button:last-child {
+  background-color: #bdc3c7; /* subtle gray no */
+  color: #2c3e50;
+}
+
+.logout-confirm-box button:last-child:hover {
+  background-color: #95a5a6;
 }
 
 

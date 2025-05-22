@@ -5,42 +5,23 @@ import { AuthService } from '../../auth.service';
 import { RouterModule } from '@angular/router';
 import { Router } from '@angular/router';
 
-
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule,RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
-
 })
 export class LoginComponent {
   activeForm: 'login' | 'register' | 'change' = 'login';
 
-  // Login form model
   loginData = {
     username: '',
     password: ''
   };
 
-  // Register form model
-  registerData = {
-    username: '',
-    email: '',
-    password: '',
-    repeatPassword: ''
-  };
+  constructor(private authService: AuthService, private router: Router) {}
 
-  // Change password model
-  changePasswordData = {
-    username: '',
-    oldPassword: '',
-    newPassword: '',
-    confirmPassword: ''
-  };
-
-  constructor(private authService: AuthService, private router: Router) { }
-  
   toggleForm(formName: 'login' | 'register' | 'change') {
     this.activeForm = formName;
   }
@@ -50,77 +31,23 @@ export class LoginComponent {
       alert("Please enter both username and password");
       return;
     }
-  
-    this.authService.login(this.loginData).subscribe(
-      (res: any) => {
+
+    this.authService.login(this.loginData).subscribe({
+      next: (res) => {
         alert('Login successful!');
         console.log(res);
-  
-        // Token is already saved inside AuthService.login via tap operator
-        // Just navigate to home page now
+
+        // After login, you can get the role and redirect accordingly or just to home
+        const role = this.authService.getRole();
+        console.log('User Role:', role);
+
+        // Navigate to home or role-based pages (example)
         this.router.navigate(['/home']);
       },
-      (err: any) => {
+      error: (err) => {
         console.error(err);
-        alert(err.error || 'Login failed');
+        alert(err.error?.message || 'Login failed, please try again.');
       }
-    );
-  }
-  
-  onRegister() {
-    if (!this.registerData.username || !this.registerData.email || !this.registerData.password) {
-      alert("Please fill all fields");
-      return;
-    }
-  
-    if (this.registerData.password !== this.registerData.repeatPassword) {
-      alert("Passwords do not match");
-      return;
-    }
-  
-    this.authService.register(this.registerData).subscribe(
-      (res: any) => {
-        alert("Registered successfully!");
-        console.log(res); // For debugging the response
-        this.toggleForm('login'); // Automatically redirect to login
-      },
-      (err: any) => {
-        console.error(err);
-        alert(err.error || 'Registration failed');
-      }
-    );
-  }
-  
-  
-  onChangePassword() {
-    const { username, oldPassword, newPassword, confirmPassword } = this.changePasswordData;
-  
-    if (!username || !oldPassword || !newPassword || !confirmPassword) {
-      alert("Please fill all fields");
-      return;
-    }
-  
-    if (newPassword !== confirmPassword) {
-      alert("New passwords do not match");
-      return;
-    }
-  
-    const payload = {
-      username,
-      oldPassword,
-      newPassword
-    };
-  
-    this.authService.changePassword(payload).subscribe(
-      (res: any) => {
-        alert("Password changed successfully!");
-        console.log(res);
-        this.toggleForm('login');
-      },
-      (err: any) => {
-        console.error(err);
-        alert(err.error || 'Password change failed');
-      }
-    );
+    });
   }
 }

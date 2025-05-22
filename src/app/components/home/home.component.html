@@ -1,133 +1,146 @@
 <div class="container">
     <!-- Sidebar -->
     <aside class="sidebar" [class.expanded]="sidebarExpanded">
-        <div class="logo-section">
-            <div class="logo">
-                <!-- Mini logo (shown when sidebar is collapsed) -->
-                <img src="assets/images/bses-batch.png" alt="Mini Logo" class="logo-mini" />
-
-                <!-- Full logo (shown when sidebar is expanded) -->
-                <img src="assets/images/bses-rajdhani.jpg" alt="Full Logo" class="logo-full" />
-            </div>
-            <div class="toggle-sidebar" (click)="toggleSidebar()">
-                <i class="fas fa-chevron-right"></i>
-            </div>
+      <div class="logo-section">
+        <div class="logo">
+          <img src="assets/images/bses-batch.png" alt="Mini Logo" class="logo-mini" />
+          <img src="assets/images/bses-rajdhani.jpg" alt="Full Logo" class="logo-full" />
         </div>
-        
-
+        <div class="toggle-sidebar" (click)="toggleSidebar()">
+          <i class="fas fa-chevron-right"></i>
+        </div>
+      </div>
+  
+      <hr class="sidebar-separator" />
+  
+      <nav class="sidebar-nav">
+        <a routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+          <i class="fas fa-house"></i>
+          <span> Home</span>
+        </a>
+  
         <hr class="sidebar-separator" />
-
-        <nav class="sidebar-nav">
-            <a routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-                <i class="fas fa-house"></i>
-                <span> Home</span>
+  
+        <!-- Master menu only for admin -->
+        <div *ngIf="userRole === 'admin'" class="menu-item" [class.expanded]="masterMenuExpanded">
+          <div class="menu-header" (click)="toggleMasterMenu()">
+            <i class="fas fa-file-alt"></i>
+            <span>Master</span>
+            <i class="fas fa-chevron-down toggle-icon" [class.rotate]="masterMenuExpanded"></i>
+          </div>
+          <div class="submenu" *ngIf="masterMenuExpanded">
+            <a routerLink="/home/master/agency-master" routerLinkActive="active">
+              <span class="full-label">Agency Master</span>
+              <span class="short-label">AM</span>
             </a>
-            <hr class="sidebar-separator" />
-            <div class="menu-item" [class.expanded]="masterMenuExpanded">
-                <div class="menu-header" (click)="toggleMasterMenu()">
-                    <i class="fas fa-file-alt"></i>
-                    <span>Master</span>
-                    <i class="fas fa-chevron-down toggle-icon" [class.rotate]="masterMenuExpanded"></i>
-                </div>
-                <div class="submenu" *ngIf="masterMenuExpanded">
-                    <a routerLink="/home/master/agency-master" routerLinkActive="active">
-                        <span class="full-label">Agency Master</span>
-                        <span class="short-label">AM</span>
-                    </a>
-                    <a routerLink="/home/master/agency-mapping-master" routerLinkActive="active">
-                        <span class="full-label">Agency Mapping Master</span>
-                        <span class="short-label">AMM</span>
-                    </a>
-                    <a routerLink="/home/master/commission-master" routerLinkActive="active">
-                        <span class="full-label">Commission Master</span>
-                        <span class="short-label">CM</span>
-                    </a>
-                    <a routerLink="/home/master/agency-allocation-master" routerLinkActive="active">
-                        <span class="full-label">Agency Allocation Master</span>
-                        <span class="short-label">AAM</span>
-                    </a>
-                    <a routerLink="/home/master/defaulter-allocation-master" routerLinkActive="active">
-                        <span class="full-label">Defaulter Allocation Master</span>
-                        <span class="short-label">DAM</span>
-                    </a>
-                    <a routerLink="/home/master/role-master" routerLinkActive="active">
-                        <span class="full-label">Role Master</span>
-                        <span class="short-label">RM</span>
-                    </a>
-                    <a routerLink="/home/master/user-master" routerLinkActive="active">
-                        <span class="full-label">User Master</span>
-                        <span class="short-label">UM</span>
-                    </a>
-                    <a routerLink="/home/master/priority-ivr-master" routerLinkActive="active">
-                        <span class="full-label">Priority IVR</span>
-                        <span class="short-label">IVR</span>
-                    </a>
-                </div>
-
-            </div>
-
-            <a routerLink="/home/allotment" routerLinkActive="active">
-                <i class="fas fa-clipboard-list"></i>
-                <span>Allotment & Assignment</span>
+            <a routerLink="/home/master/agency-mapping-master" routerLinkActive="active">
+              <span class="full-label">Agency Mapping Master</span>
+              <span class="short-label">AMM</span>
             </a>
-
-            <a routerLink="/home/recovery-report" routerLinkActive="active">
-                <i class="fas fa-file-signature"></i>
-                <span>Recovery Report & Update</span>
+            <a routerLink="/home/master/commission-master" routerLinkActive="active">
+              <span class="full-label">Commission Master</span>
+              <span class="short-label">CM</span>
             </a>
-
-            <a routerLink="/home/action-taken" routerLinkActive="active">
-                <i class="fas fa-id-card"></i>
-                <span>Action Taken Report</span>
+            <a routerLink="/home/master/agency-allocation-master" routerLinkActive="active">
+              <span class="full-label">Agency Allocation Master</span>
+              <span class="short-label">AAM</span>
             </a>
-
-
-            <div class="menu-item" [class.expanded]="customerCareMenuExpanded">
-                <div class="menu-header" (click)="toggleCustomerCareMenu()">
-                    <i class="fas fa-address-book"></i>
-                    <span>Customer Care Services</span>
-                    <i class="fas fa-chevron-down toggle-icon" [class.rotate]="customerCareMenuExpanded"></i>
-                </div>
-                <div class="submenu" *ngIf="customerCareMenuExpanded">
-                    <a routerLink="/home/customer-care/call-center" routerLinkActive="active">
-                        <span class="full-label">Call Center Calling</span>
-                        <span class="short-label">CC</span>
-                    </a>
-                    <a routerLink="/home/customer-care/division-office" routerLinkActive="active">
-                        <span class="full-label">Division Office Calling</span>
-                        <span class="short-label">DOC</span>
-                    </a>
-                </div>
-            </div>
-
-            <a routerLink="/home/report" routerLinkActive="active">
-                <i class="fas fa-envelope-open-text"></i>
-                <span>Report</span>
+            <a routerLink="/home/master/defaulter-allocation-master" routerLinkActive="active">
+              <span class="full-label">Defaulter Allocation Master</span>
+              <span class="short-label">DAM</span>
             </a>
-        </nav>
+            <a routerLink="/home/master/role-master" routerLinkActive="active">
+              <span class="full-label">Role Master</span>
+              <span class="short-label">RM</span>
+            </a>
+            <a routerLink="/home/master/user-master" routerLinkActive="active">
+              <span class="full-label">User Master</span>
+              <span class="short-label">UM</span>
+            </a>
+            <a routerLink="/home/master/priority-ivr-master" routerLinkActive="active">
+              <span class="full-label">Priority IVR</span>
+              <span class="short-label">IVR</span>
+            </a>
+          </div>
+        </div>
+  
+        <!-- Allotment & Assignment for admin and allotment only -->
+        <a *ngIf="userRole === 'admin' || userRole === 'allotment'" routerLink="/home/allotment" routerLinkActive="active">
+          <i class="fas fa-clipboard-list"></i>
+          <span>Allotment & Assignment</span>
+        </a>
+  
+        <!-- Recovery Report & Update for all roles -->
+        <a routerLink="/home/recovery-report" routerLinkActive="active">
+          <i class="fas fa-file-signature"></i>
+          <span>Recovery Report & Update</span>
+        </a>
+  
+        <!-- Action Taken Report for all roles -->
+        <a routerLink="/home/action-taken" routerLinkActive="active">
+          <i class="fas fa-id-card"></i>
+          <span>Action Taken Report</span>
+        </a>
+  
+        <!-- Customer Care Services for all roles -->
+        <div class="menu-item" [class.expanded]="customerCareMenuExpanded">
+          <div class="menu-header" (click)="toggleCustomerCareMenu()">
+            <i class="fas fa-address-book"></i>
+            <span>Customer Care Services</span>
+            <i class="fas fa-chevron-down toggle-icon" [class.rotate]="customerCareMenuExpanded"></i>
+          </div>
+          <div class="submenu" *ngIf="customerCareMenuExpanded">
+            <a routerLink="/home/customer-care/call-center" routerLinkActive="active">
+              <span class="full-label">Call Center Calling</span>
+              <span class="short-label">CC</span>
+            </a>
+            <a routerLink="/home/customer-care/division-office" routerLinkActive="active">
+              <span class="full-label">Division Office Calling</span>
+              <span class="short-label">DOC</span>
+            </a>
+          </div>
+        </div>
+  
+        <!-- Report for all roles -->
+        <a routerLink="/home/report" routerLinkActive="active">
+          <i class="fas fa-envelope-open-text"></i>
+          <span>Report</span>
+        </a>
+      </nav>
     </aside>
-
-
+  
     <!-- Main Content -->
     <main class="main">
-        <header class="topbar">
-            <div class="system-title">Recovery Process System</div>
-
-            <div class="avatar-wrapper" (click)="toggleLogoutDropdown()">
-                <div class="avatar">👤</div>
-
-                <div class="avatar-dropdown" *ngIf="showLogout" (click)="$event.stopPropagation()">
-                    <button class="logout-btn" (click)="logout(); $event.stopPropagation()">Logout</button>
-                </div>
+      <header class="topbar">
+        <div class="system-title">Recovery Process System</div>
+  
+        <div class="avatar-wrapper" (click)="toggleLogoutDropdown()">
+            <div class="avatar">👤</div>
+          
+            <div class="avatar-dropdown" *ngIf="showLogout" (click)="$event.stopPropagation()">
+              <span class="user-role">{{ userRole | titlecase }}</span>
+              <button class="logout-btn" (click)="showLogoutConfirm = true; $event.stopPropagation()">Logout</button>
             </div>
-
-        </header>
-
-        <section class="content">
-            <router-outlet></router-outlet>
-        </section>
-        <footer class="footer">
-            <div>&#64;2024 BSES Delhi. All Rights Reserved.</div>
-        </footer>
+          </div>
+          
+          <!-- Logout confirmation modal -->
+          <div class="logout-confirm-overlay" *ngIf="showLogoutConfirm" (click)="cancelLogout()">
+            <div class="logout-confirm-box" (click)="$event.stopPropagation()">
+              <p>Are you sure you want to logout?</p>
+              <button (click)="confirmLogout()">Yes</button>
+              <button (click)="cancelLogout()">No</button>
+            </div>
+          </div>
+          
+      </header>
+  
+      <section class="content">
+        <router-outlet></router-outlet>
+      </section>
+  
+      <footer class="footer">
+        <div>&#64;2024 BSES Delhi. All Rights Reserved.</div>
+      </footer>
     </main>
-</div>
+  </div>
+  

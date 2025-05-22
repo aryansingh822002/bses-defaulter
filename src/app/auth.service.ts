@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
-import * as jwtDecode from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private baseUrl = 'https://localhost:5001/api/auth'; 
+  private baseUrl = 'http://localhost:5044/api/auth';
 
   constructor(private http: HttpClient) {}
 
@@ -22,17 +22,9 @@ export class AuthService {
       );
   }
 
-  register(data: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}/register`, data);
-  }
-
-  changePassword(data: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}/changepassword`, data);
-  }
-
   setToken(token: string): void {
     localStorage.setItem('token', token);
-    const decoded: any = (jwtDecode as any)(token);
+    const decoded: any = jwtDecode(token);
     const role = decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
     if (role) {
       localStorage.setItem('role', role);
@@ -55,4 +47,17 @@ export class AuthService {
     localStorage.removeItem('token');
     localStorage.removeItem('role');
   }
+  getMappedRole(): 'admin' | 'allotment' | 'field' {
+    const rawRole = this.getRole()?.toLowerCase();
+  
+    if (!rawRole) return 'field'; // fallback
+  
+    if (rawRole.includes('admin')) return 'admin';
+    if (rawRole.includes('allotment')) return 'allotment';
+    if (rawRole.includes('field')) return 'field';
+  
+    return 'field'; // default fallback
+  }
+  
+  
 }

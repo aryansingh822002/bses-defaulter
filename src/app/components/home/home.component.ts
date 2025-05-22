@@ -22,27 +22,15 @@ export class HomeComponent implements OnInit {
   masterMenuExpanded = false;
   customerCareMenuExpanded = false;
   sidebarExpanded = false;
-
   showLogout = false;
+  currentView = 'home';
+  showLogoutConfirm = false;
 
-
-  toggleMasterMenu() {
-    this.masterMenuExpanded = !this.masterMenuExpanded;
-  }
-
-  toggleCustomerCareMenu() {
-    this.customerCareMenuExpanded = !this.customerCareMenuExpanded;
-  }
-  toggleSidebar() {
-    this.sidebarExpanded = !this.sidebarExpanded;
-  }
-
-
+  userRole: 'admin' | 'allotment' | 'field' = 'field'; // default fallback
 
   form1!: FormGroup;
   form2!: FormGroup;
   form3!: FormGroup;
-  currentView = 'home';
 
   constructor(
     private router: Router,
@@ -51,8 +39,25 @@ export class HomeComponent implements OnInit {
   ) { }
 
 
-  //initialize form 1 
   ngOnInit(): void {
+    const rawRole = this.authService.getRole(); // Gets role from token (e.g., 'Admin', 'AllotmentOfficer', etc.)
+    let normalizedRole = 'field'; // Default fallback
+
+    if (rawRole) {
+      const lower = rawRole.toLowerCase();
+      if (lower.includes('admin')) {
+        normalizedRole = 'admin';
+      } else if (lower.includes('allot')) {
+        normalizedRole = 'allotment';
+      } else if (lower.includes('field')) {
+        normalizedRole = 'field';
+      }
+    }
+
+    this.userRole = normalizedRole as 'admin' | 'allotment' | 'field';
+    console.log("User role resolved to:", this.userRole);
+
+    // Form 1: Allotment
     this.form1 = this.fb.group({
       compName: ['', Validators.required],
       company: ['', Validators.required],
@@ -62,22 +67,22 @@ export class HomeComponent implements OnInit {
       criteria: ['', Validators.required],
       facilitatorName: ['', Validators.required],
       joiningDate: ['', Validators.required],
-      remarks: ['', Validators.required], // Address
+      remarks: ['', Validators.required],
       reportingPerson: ['', Validators.required],
       mobileNumber: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]]
     });
 
-    // initialize form 2 
+    // Form 2: Admin
     this.form2 = this.fb.group({
       employeeId: ['', Validators.required],
-      employeeName: [{ value: '', disabled: true }, Validators.required], // Readonly field
+      employeeName: [{ value: '', disabled: true }, Validators.required],
       role: ['', Validators.required],
       assignedWork: ['', Validators.required],
       startDate: ['', Validators.required],
       endDate: ['', Validators.required]
     });
 
-    // initialize form 3
+    // Form 3: Field
     this.form3 = this.fb.group({
       caNumber: ['', Validators.required],
       facilitatorId: ['', Validators.required],
@@ -90,9 +95,43 @@ export class HomeComponent implements OnInit {
       remarks: [''],
       actionTaken: ['', Validators.required],
       finalStatus: ['', Validators.required],
-      penaltyApplied: [false] // checkbox
+      penaltyApplied: [false]
     });
+  }
 
+  toggleMasterMenu() {
+    this.masterMenuExpanded = !this.masterMenuExpanded;
+  }
+
+  toggleCustomerCareMenu() {
+    this.customerCareMenuExpanded = !this.customerCareMenuExpanded;
+  }
+
+  toggleSidebar() {
+    this.sidebarExpanded = !this.sidebarExpanded;
+  }
+
+  toggleLogoutDropdown() {
+    this.showLogout = !this.showLogout;
+  }
+
+  logout() {
+    this.showLogoutConfirm = false;  // hide confirmation modal
+    this.showLogout = false;         // hide dropdown
+  
+    this.authService.logout();
+    this.router.navigate(['']);
+  }
+  confirmLogout() {
+    this.logout();
+  }
+  
+  cancelLogout() {
+    this.showLogoutConfirm = false;
+  }
+
+  switchView(view: string): void {
+    this.currentView = view;
   }
 
   onSubmit(): void {
@@ -138,36 +177,9 @@ export class HomeComponent implements OnInit {
     this.form3.reset();
   }
 
-
-
-
-
-
-  switchView(view: string): void {
-    this.currentView = view;
-  }
-
-
-
-  toggleLogoutDropdown() {
-    this.showLogout = !this.showLogout;
-  }
-
-  logout() {
-    this.authService.logout();
-    this.router.navigate(['']);
-  }
-
   setView(view: string) {
     this.currentView = view;
   }
-
-
-
-
-
-
-
 
   reports = [
     { caNumber: '123456789', date: '2025-04-24', action: 'Notice Issued', facilitator: 'EMP001' },
