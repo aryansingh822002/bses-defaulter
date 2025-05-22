@@ -1,0 +1,214 @@
+.form-wrapper {
+  padding: 0px 20px;
+  font-family: Arial, sans-serif;
+}
+
+.form-heading h2 {
+  margin: 10px 0;
+  font-size: 20px;
+  color: #343a40;
+}
+.form-heading h4 {
+    margin: 10px 0px 0px 0px;
+    /* font-size: 20px; */
+    color: #343a40;
+}
+
+.form1-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto auto auto 2px auto;
+  gap: 10px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #f8f9fa;
+}
+
+.grid-item {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #bbb;
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 4px;
+}
+
+label {
+  font-size: 12px;
+  margin-bottom: 5px;
+}
+
+.required {
+  color: red;
+  margin-left: 5px;
+  font-weight: bold;
+}
+
+.form-control {
+  height: 30px;
+  border-radius: 5px;
+  border: solid lightgray 1px;
+  padding: 0 5px;
+}
+
+.grid-border {
+  grid-column: 1 / span 3;
+  height: 2px;
+  background-color: black;
+  margin: 10px 0;
+}
+
+.grid-buttons {
+  grid-column: 1 / span 3;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.left-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.right-button {
+  display: flex;
+  justify-content: flex-end;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 14px;
+  cursor: pointer;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 4px;
+  transition: background-color 0.2s ease-in-out;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+.grid-row-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  grid-column: 1 / span 3;
+}
+
+
+/* table */
+
+.toggle-table-btn{
+    padding:10px 0px;
+}
+
+.agency-table-container {
+  /* margin-top: 20px; */
+  padding: 10px;
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow-x: auto;
+}
+
+.agency-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.agency-table th,
+.agency-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.agency-table th {
+  background-color: #007bff;
+  color: white;
+  font-weight: bold;
+}
+
+.agency-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+/* .agency-table tr:hover {
+  background-color: #e0e0e0;
+} */
+
+/* Switch styles remain */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 20px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0;
+  right: 0; bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 20px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #28a745;
+}
+
+input:checked + .slider:before {
+  transform: translateX(20px);
+}
+
+/* Action icon buttons inside table */
+.action-buttons {
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+  align-items: center;
+}
+
+.icon-button {
+  background: none;
+  border: solid black 1px;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 5px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease-in-out;
+}
+
+/* Edit button hover effect */
+.edit-btn:hover {
+  background-color: #e0f7fa;
+}
+
+/* Delete button hover effect */
+.delete-btn:hover {
+  background-color: #fdecea;
+}

@@ -1,1 +1,72 @@
-<p>role-master works!</p>
+<div class="form-wrapper">
+    <div class="form-heading">
+        <h2>Role Master</h2>
+    </div>
+    <div class="form-cont">
+        <form [formGroup]="roleForm" (ngSubmit)="onSubmit()">
+            <div class="form1-grid">
+                <!-- Row 1 (Role, Account Class) -->
+                <div class="grid-item">
+                    <label class="form-label">Role<span class="required">*</span></label>
+                    <input type="text" class="form-control" formControlName="role" placeholder="Enter role name">
+                </div>
+                <div class="grid-item">
+                    <label class="form-label">Account Class<span class="required">*</span></label>
+                    <select class="form-control" formControlName="accountClass">
+                        <option value="">Select Account Class</option>
+                        <option value="SLCC">SLCC</option>
+                        <option value="OTHERS">Others</option>
+                    </select>
+                </div>
+
+                <!-- Buttons -->
+                <div class="grid-buttons">
+                    <div class="left-buttons">
+                        <button type="submit">Save</button>
+                        <button type="button" (click)="onReset()">Refresh</button>
+                    </div>
+                    <div class="right-button">
+                        <button type="button" (click)="onClose()">Close</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <!-- Role Table Section -->
+        <div class="role-table-section">
+            <button type="button" class="show-table-btn" (click)="toggleRoleTable()">
+                {{ showRoleTable ? 'Hide Role Table' : 'Show Role Table' }}
+            </button>
+            
+            @if (showRoleTable) {
+            <div class="role-table-container">
+                <table class="role-table">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Role ID</th>
+                            <th>Role</th>
+                            <th>Account Class</th>
+                            <th>Create Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (role of roles; track role.roleId; let i = $index) {
+                        <tr>
+                            <td class="action-buttons">
+                                <button class="icon-button edit-btn" (click)="editRole(role)" title="Edit">✏️</button>
+                                <button class="icon-button delete-btn" (click)="deleteRole(role.roleId)" title="Delete">🗑️</button>
+                            </td>
+                            <td>{{ role.roleId }}</td>
+                            <td>{{ role.role }}</td>
+                            <td>{{ role.accountClass }}</td>
+                            <td>{{ role.createDate | date:'dd/MM/yyyy' }}</td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            }
+        </div>
+    </div>
+</div>

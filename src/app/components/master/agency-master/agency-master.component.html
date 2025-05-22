@@ -1,1 +1,143 @@
-<p>agency-master works!</p>
+<div class="form-wrapper">
+    <div class="form-heading">
+        <h2>Agency Master</h2>
+    </div>
+    <div class="form-cont">
+        <form [formGroup]="agencyForm" (ngSubmit)="onSubmit()">
+            <div class="form1-grid">
+                <!-- Row 1 -->
+                <div class="grid-item">
+                    <label class="form-label">Agency Name<span class="required">*</span></label>
+                    <input type="text" class="form-control" formControlName="agencyName" />
+                </div>
+                <div class="grid-item">
+                    <label class="form-label">Office No.<span class="required">*</span></label>
+                    <input type="text" class="form-control" formControlName="officeNo" />
+                </div>
+                <div class="grid-item">
+                    <label class="form-label">TAN#<span class="required">*</span></label>
+                    <input type="text" class="form-control" formControlName="tanNo" />
+                </div>
+
+                <!-- Row 2 -->
+                <div class="grid-item">
+                    <label class="form-label">Phone No.<span class="required">*</span></label>
+                    <input type="text" class="form-control" formControlName="phoneNo" />
+                </div>
+                <div class="grid-item">
+                    <label class="form-label">Fax No.<span class="required">*</span></label>
+                    <input type="text" class="form-control" formControlName="faxNo" />
+                </div>
+                <div class="grid-item">
+                    <label class="form-label">Website<span class="required">*</span></label>
+                    <input type="text" class="form-control" formControlName="website" />
+                </div>
+
+                <!-- Row 3 -->
+                <div class="grid-item" style="grid-column: span 2">
+                    <label class="form-label">Address<span class="required">*</span></label>
+                    <input type="text" class="form-control" formControlName="address" />
+                </div>
+                <div class="grid-item">
+                    <label class="form-label">Account Class<span class="required">*</span></label>
+                    <select class="form-control" formControlName="accClass">
+                        <option value="">Select Class</option>
+                        <option value="SLCC">SLCC</option>
+                        <option value="None">None</option>
+                    </select>
+                </div>
+
+                <!-- Border -->
+                <div class="grid-border"></div>
+
+                <!-- Contact Person Section -->
+                <div class="form-heading" id="heading2" style="grid-column: 1 / span 3;">
+                    <h4>Contact Person Details</h4>
+                </div>
+
+                <div class="grid-row-3">
+                    <div class="grid-item">
+                        <label class="form-label">Person Name<span class="required">*</span></label>
+                        <input type="text" class="form-control" formControlName="personName" />
+                    </div>
+                    <div class="grid-item">
+                        <label class="form-label">Email ID<span class="required">*</span></label>
+                        <input type="email" class="form-control" formControlName="emailId" />
+                    </div>
+                    <div class="grid-item">
+                        <label class="form-label">Mobile No.<span class="required">*</span></label>
+                        <input type="text" class="form-control" formControlName="mobileNo" />
+                    </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="grid-buttons">
+                    <div class="left-buttons">
+                        <button type="submit">Save</button>
+                        <button type="button" (click)="onReset()">Refresh</button>
+                    </div>
+                    <div class="right-button">
+                        <button type="button" (click)="onClose()">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+        <div class="toggle-table-btn">
+            <button (click)="toggleTable()">
+                {{ showTable ? 'Hide Agency Table' : 'Show Agency Table' }}
+            </button>
+        </div>
+
+        <!-- Agency Table -->
+        <div *ngIf="showTable" class="agency-table-container">
+            <table class="agency-table">
+                <thead>
+  <tr>
+    <th></th>
+    <th>Agency Code</th>
+    <th>Agency Name</th>
+    <th>Office No.</th>
+    <th>TAN No.</th>
+    <th>Phone No.</th>
+    <th>Fax No.</th>
+    <th>Website</th>
+    <th>Address</th>
+    <th>Account Class</th>
+    <th>Person Name</th>
+    <th>Email ID</th>
+    <th>Mobile No.</th>
+    <th>Status</th>
+  </tr>
+</thead>
+<tbody>
+  <tr *ngFor="let agency of agencyList">
+    <td class="action-buttons">
+      <button class="icon-button edit-btn" (click)="selectAgency(agency)" title="Edit">✏️</button>
+      <button class="icon-button delete-btn" (click)="deleteAgency(agency)" title="Delete">🗑️</button>
+    </td>
+    <td>{{ agency.code }}</td>
+    <td>{{ agency.agencyName }}</td>
+    <td>{{ agency.officeNo }}</td>
+    <td>{{ agency.tanNo }}</td>
+    <td>{{ agency.phoneNo }}</td>
+    <td>{{ agency.faxNo }}</td>
+    <td>{{ agency.website }}</td>
+    <td>{{ agency.address }}</td>
+    <td>{{ agency.accClass }}</td>
+    <td>{{ agency.personName }}</td>
+    <td>{{ agency.emailId }}</td>
+    <td>{{ agency.mobileNo }}</td>
+    <td>
+      <label class="switch">
+        <input type="checkbox" [checked]="agency.status" (change)="toggleStatus(agency)">
+        <span class="slider round"></span>
+      </label>
+    </td>
+  </tr>
+</tbody>
+
+            </table>
+        </div>
+    </div>
+</div>
