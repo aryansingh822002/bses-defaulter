@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../auth.service';
 import { RouterModule } from '@angular/router';
-
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -39,8 +39,8 @@ export class LoginComponent {
     confirmPassword: ''
   };
 
-  constructor(private authService: AuthService) {}
-
+  constructor(private authService: AuthService, private router: Router) { }
+  
   toggleForm(formName: 'login' | 'register' | 'change') {
     this.activeForm = formName;
   }
@@ -55,6 +55,10 @@ export class LoginComponent {
       (res: any) => {
         alert('Login successful!');
         console.log(res);
+  
+        // Token is already saved inside AuthService.login via tap operator
+        // Just navigate to home page now
+        this.router.navigate(['/home']);
       },
       (err: any) => {
         console.error(err);

@@ -2,28 +2,29 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { NgChartsModule } from 'ng2-charts';
+import { AuthService } from '../../auth.service';
 import {
   ChartConfiguration,
   ChartOptions,
   ChartType,
 } from 'chart.js';
-import { FormsModule, ReactiveFormsModule , FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, NgChartsModule,FormsModule, ReactiveFormsModule, RouterOutlet,RouterLink, RouterLinkActive],
+  imports: [CommonModule, NgChartsModule, FormsModule, ReactiveFormsModule, RouterOutlet, RouterLink, RouterLinkActive],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit{
+export class HomeComponent implements OnInit {
   masterMenuExpanded = false;
   customerCareMenuExpanded = false;
   sidebarExpanded = false;
-  
+
   showLogout = false;
-  
+
 
   toggleMasterMenu() {
     this.masterMenuExpanded = !this.masterMenuExpanded;
@@ -31,11 +32,11 @@ export class HomeComponent implements OnInit{
 
   toggleCustomerCareMenu() {
     this.customerCareMenuExpanded = !this.customerCareMenuExpanded;
-}
-toggleSidebar() {
-  this.sidebarExpanded = !this.sidebarExpanded;
-}
-  
+  }
+  toggleSidebar() {
+    this.sidebarExpanded = !this.sidebarExpanded;
+  }
+
 
 
   form1!: FormGroup;
@@ -43,7 +44,11 @@ toggleSidebar() {
   form3!: FormGroup;
   currentView = 'home';
 
-  constructor(private router: Router,private fb: FormBuilder) {}
+  constructor(
+    private router: Router,
+    private fb: FormBuilder,
+    private authService: AuthService // Inject AuthService here
+  ) { }
 
 
   //initialize form 1 
@@ -61,34 +66,34 @@ toggleSidebar() {
       reportingPerson: ['', Validators.required],
       mobileNumber: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]]
     });
-  
+
     // initialize form 2 
-  this.form2 = this.fb.group({
-    employeeId: ['', Validators.required],
-    employeeName: [{ value: '', disabled: true }, Validators.required], // Readonly field
-    role: ['', Validators.required],
-    assignedWork: ['', Validators.required],
-    startDate: ['', Validators.required],
-    endDate: ['', Validators.required]
-  });
+    this.form2 = this.fb.group({
+      employeeId: ['', Validators.required],
+      employeeName: [{ value: '', disabled: true }, Validators.required], // Readonly field
+      role: ['', Validators.required],
+      assignedWork: ['', Validators.required],
+      startDate: ['', Validators.required],
+      endDate: ['', Validators.required]
+    });
 
-  // initialize form 3
-  this.form3 = this.fb.group({
-    caNumber: ['', Validators.required],
-    facilitatorId: ['', Validators.required],
-    paymentAmount: ['', [Validators.required, Validators.min(0)]],
-    paymentMethod: ['', Validators.required],
-    paymentDate: ['', Validators.required],
-    outstandingAmount: ['', [Validators.required, Validators.min(0)]],
-    workStatus: ['', Validators.required],
-    nextFollowUp: ['', Validators.required],
-    remarks: [''],
-    actionTaken: ['', Validators.required],
-    finalStatus: ['', Validators.required],
-    penaltyApplied: [false] // checkbox
-  });
+    // initialize form 3
+    this.form3 = this.fb.group({
+      caNumber: ['', Validators.required],
+      facilitatorId: ['', Validators.required],
+      paymentAmount: ['', [Validators.required, Validators.min(0)]],
+      paymentMethod: ['', Validators.required],
+      paymentDate: ['', Validators.required],
+      outstandingAmount: ['', [Validators.required, Validators.min(0)]],
+      workStatus: ['', Validators.required],
+      nextFollowUp: ['', Validators.required],
+      remarks: [''],
+      actionTaken: ['', Validators.required],
+      finalStatus: ['', Validators.required],
+      penaltyApplied: [false] // checkbox
+    });
 
-}
+  }
 
   onSubmit(): void {
     if (this.form1.valid) {
@@ -128,7 +133,7 @@ toggleSidebar() {
       this.form3.markAllAsTouched();
     }
   }
-  
+
   onResetForm3(): void {
     this.form3.reset();
   }
@@ -149,14 +154,15 @@ toggleSidebar() {
   }
 
   logout() {
-    this.router.navigate(['/login']);
+    this.authService.logout();
+    this.router.navigate(['']);
   }
 
   setView(view: string) {
     this.currentView = view;
   }
 
- 
+
 
 
 
@@ -210,7 +216,7 @@ toggleSidebar() {
       description: ''
     };
   }
-  
+
   closeForm() {
     // You can implement form hiding logic here, like toggling a boolean flag
   }

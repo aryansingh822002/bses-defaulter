@@ -23,6 +23,7 @@ import { AgencyMappingMasterComponent } from './components/master/agency-mapping
 import { AgencyMasterComponent } from './components/master/agency-master/agency-master.component';
 import { DivisionOfficeComponent } from './components/customer-care/division-office/division-office.component';
 import { CallCenterComponent } from './components/customer-care/call-center/call-center.component';
+import { AuthGuard } from './auth.guard';
 
 export const routes: Routes = [
     {path:'',component: LoginComponent},
@@ -30,20 +31,22 @@ export const routes: Routes = [
         component: HomeComponent,
         children: [
           { path: '', component: DashboardComponent },
-          { 
-        path: 'master',
-        children: [
-          { path: '', component: DashboardComponent }, // Default master view
-          { path: 'agency-master', component: AgencyMasterComponent },
-          { path: 'agency-mapping-master', component: AgencyMappingMasterComponent },
-          { path: 'commission-master', component: CommissionMasterComponent },
-          { path: 'agency-allocation-master', component: AgencyAllocationMasterComponent },
-          { path: 'defaulter-allocation-master', component: DefaulterAllocationMasterComponent },
-          { path: 'role-master', component: RoleMasterComponent },
-          { path: 'user-master', component: UserMasterComponent },
-          { path: 'priority-ivr-master', component: PriorityIVRComponent } 
-        ]
-      },
+          {
+            path: 'master',
+            canActivate: [AuthGuard],
+            data: { roles: ['Admin'] },  // Only Admin role can access master routes
+            children: [
+              { path: '', component: DashboardComponent }, // Default master view
+              { path: 'agency-master', component: AgencyMasterComponent },
+              { path: 'agency-mapping-master', component: AgencyMappingMasterComponent },
+              { path: 'commission-master', component: CommissionMasterComponent },
+              { path: 'agency-allocation-master', component: AgencyAllocationMasterComponent },
+              { path: 'defaulter-allocation-master', component: DefaulterAllocationMasterComponent },
+              { path: 'role-master', component: RoleMasterComponent },
+              { path: 'user-master', component: UserMasterComponent },
+              { path: 'priority-ivr-master', component: PriorityIVRComponent },
+            ],
+          },
           { path: 'allotment', component: AllotmentComponent },
           { path: 'recovery-report', component: RecoveryReportComponent },
           { path: 'action-taken', component: ActionTakenComponent },
@@ -56,6 +59,7 @@ export const routes: Routes = [
           },
           { path: 'report', component: ReportComponent }
     ]
-    }
+    },
+    { path: '**', redirectTo: '' },
 ];
 

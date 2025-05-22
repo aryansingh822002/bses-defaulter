@@ -4,7 +4,7 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-master',
-  imports: [CommonModule, RouterOutlet,RouterLink],
+  imports: [CommonModule],
   standalone:true,
   templateUrl: './master.component.html',
   styleUrl: './master.component.css'
