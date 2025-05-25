@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterModule, Router } from '@angular/router';
 import { AuthService } from '../../auth.service';
-import { RouterModule } from '@angular/router';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -22,7 +21,7 @@ export class LoginComponent {
 
   constructor(private authService: AuthService, private router: Router) {}
 
-  toggleForm(formName: 'login' | 'register' | 'change') {
+  toggleForm(formName: 'login') {
     this.activeForm = formName;
   }
 
@@ -33,16 +32,22 @@ export class LoginComponent {
     }
 
     this.authService.login(this.loginData).subscribe({
-      next: (res) => {
-        alert('Login successful!');
-        console.log(res);
-
-        // After login, you can get the role and redirect accordingly or just to home
+      next: () => {
         const role = this.authService.getRole();
         console.log('User Role:', role);
 
-        // Navigate to home or role-based pages (example)
-        this.router.navigate(['/home']);
+        alert('Login successful!');
+
+        // Redirect based on role
+        if (role === 'Admin Role for Bucket Creation') {
+          this.router.navigate(['/home/master']);
+        } else if (role === 'Agency User' || role === 'Circle Head') {
+          this.router.navigate(['/home/allotment']);
+        } else if (role === 'Recovery Officer' || role === 'Commercial Officer') {
+          this.router.navigate(['/home/recovery-report']);
+        } else {
+          this.router.navigate(['/home']); // Default fallback
+        }
       },
       error: (err) => {
         console.error(err);

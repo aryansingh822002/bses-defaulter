@@ -1,14 +1,15 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { 
-  ReactiveFormsModule, 
-  FormBuilder, 
-  FormGroup, 
+import {
+  ReactiveFormsModule,
+  FormBuilder,
+  FormGroup,
   Validators,
-  FormsModule 
+  FormsModule
 } from '@angular/forms';
 import { Router } from '@angular/router';
-
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-role-master',
@@ -23,24 +24,44 @@ export class RoleMasterComponent {
   isEditMode = false;
   currentEditId: number | null = null;
 
-  // Sample data
-  roles = [
-    { roleId: 1, role: 'Agency User', accountClass: 'SLCC', createDate: new Date(2024, 0, 15) },
-    { roleId: 2, role: 'Circle Head', accountClass: 'SLCC', createDate: new Date(2024, 0, 16) },
-    { roleId: 3, role: 'Call Center Executive', accountClass: 'SLCC', createDate: new Date(2024, 0, 17) },
-    { roleId: 4, role: 'Call Center Admin', accountClass: 'SLCC', createDate: new Date(2024, 0, 18) },
-    { roleId: 5, role: 'Normal User', accountClass: 'OTHERS', createDate: new Date(2024, 0, 19) },
-    { roleId: 6, role: 'Recovery Officer', accountClass: 'SLCC', createDate: new Date(2024, 0, 20) },
-    { roleId: 7, role: 'Commercial Officer', accountClass: 'SLCC', createDate: new Date(2024, 0, 21) },
-    { roleId: 8, role: 'Admin Role for Bucket Creation', accountClass: 'SLCC', createDate: new Date(2024, 0, 22) },
-    { roleId: 9, role: 'Call Center IVRS', accountClass: 'SLCC', createDate: new Date(2024, 0, 23) },
-    { roleId: 10, role: 'Agency User', accountClass: 'OTHERS', createDate: new Date(2024, 0, 24) }
-  ];
+  roles: any[] = [];
 
-  constructor(private fb: FormBuilder, private router: Router) {
+  private apiUrl = 'http://localhost:5044/api/auth'; // Adjust base path if needed
+
+  constructor(private fb: FormBuilder, private router: Router, private http: HttpClient,private snackBar: MatSnackBar) {
     this.roleForm = this.fb.group({
       role: ['', Validators.required],
       accountClass: ['', Validators.required]
+    });
+  }
+
+  ngOnInit(): void {
+    this.loadRolesFromApi();
+  }
+
+  getAuthHeaders(): HttpHeaders {
+    const token = localStorage.getItem('token');
+    let headers = new HttpHeaders();
+    if (token) {
+      headers = headers.set('Authorization', `Bearer ${token}`);
+    }
+    return headers;
+  }
+
+  loadRolesFromApi(): void {
+    this.http.get<any>(`${this.apiUrl}/roles`, { headers: this.getAuthHeaders() }).subscribe({
+      next: (data) => {
+        const rolesArray: any[] = Array.isArray(data?.$values) ? data.$values : [];
+        this.roles = rolesArray.map((r: any) => ({
+          roleId: r.roleId,
+          role: r.roleName,
+          accountClass: r.accountClass,
+          createDate: new Date(r.createDate)
+        }));
+      },
+      error: (err) => {
+        console.error('Failed to load roles', err);
+      }
     });
   }
 
@@ -49,31 +70,55 @@ export class RoleMasterComponent {
   }
 
   onSubmit(): void {
-    if (this.roleForm.valid) {
-      if (this.isEditMode && this.currentEditId) {
-        // Update existing role
-        const index = this.roles.findIndex(r => r.roleId === this.currentEditId);
-        if (index !== -1) {
-          this.roles[index] = {
-            ...this.roles[index],
-            role: this.roleForm.value.role,
-            accountClass: this.roleForm.value.accountClass
-          };
-        }
-      } else {
-        // Add new role
-        const newRole = {
-          roleId: this.roles.length + 1,
-          role: this.roleForm.value.role,
-          accountClass: this.roleForm.value.accountClass,
-          createDate: new Date()
-        };
-        this.roles.push(newRole);
-      }
-      
-      this.onReset();
-    } else {
+    if (this.roleForm.invalid) {
       this.roleForm.markAllAsTouched();
+      return;
+    }
+
+    const payload = {
+      roleName: this.roleForm.value.role, // match backend model
+      accountClass: this.roleForm.value.accountClass
+    };
+
+    const headers = this.getAuthHeaders();
+
+    if (this.isEditMode && this.currentEditId) {
+      // PUT request (edit role)
+      this.http.put(`${this.apiUrl}/roles/${this.currentEditId}`, payload, { headers }).subscribe({
+        next: () => {
+          this.loadRolesFromApi();
+          this.onReset();
+          this.snackBar.open('Role updated successfully!', 'Close', { duration: 3000 });
+        },
+        error: err => {
+          console.error('Update failed:', err);
+        }
+      });
+    } else {
+      // POST request (add role)
+      this.http.post(`${this.apiUrl}/roles`, payload, { headers }).subscribe({
+        next: () => {
+          this.loadRolesFromApi();
+          this.onReset();
+          this.snackBar.open('New role added!', 'Close', { duration: 3000 });
+        },
+        error: err => {
+          console.error('Add role failed:', err);
+        }
+      });
+    }
+  }
+
+  deleteRole(roleId: number): void {
+    if (confirm('Are you sure you want to delete this role?')) {
+      this.http.delete(`${this.apiUrl}/roles/${roleId}`, { headers: this.getAuthHeaders() }).subscribe({
+        next: () => {
+          this.loadRolesFromApi();
+        },
+        error: err => {
+          console.error('Delete failed:', err);
+        }
+      });
     }
   }
 
@@ -84,12 +129,6 @@ export class RoleMasterComponent {
       role: role.role,
       accountClass: role.accountClass
     });
-  }
-
-  deleteRole(roleId: number): void {
-    if (confirm('Are you sure you want to delete this role?')) {
-      this.roles = this.roles.filter(role => role.roleId !== roleId);
-    }
   }
 
   onReset(): void {

@@ -11,24 +11,24 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  login(data: any): Observable<{ token: string; role: string }> {
-    return this.http.post<{ token: string; role: string }>(`${this.baseUrl}/login`, data)
-      .pipe(
-        tap(response => {
-          if (response.token) {
-            this.setToken(response.token);
-          }
-        })
-      );
+  login(data: any): Observable<{ token: string }> {
+    return this.http.post<{ token: string }>(`${this.baseUrl}/login`, data).pipe(
+      tap(response => {
+        if (response.token) {
+          this.setToken(response.token);
+        }
+      })
+    );
   }
 
   setToken(token: string): void {
     localStorage.setItem('token', token);
     const decoded: any = jwtDecode(token);
-    const role = decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
-    if (role) {
-      localStorage.setItem('role', role);
-    }
+    const role = decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+    const username = decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"];
+
+    if (role) localStorage.setItem('role', role);
+    if (username) localStorage.setItem('username', username);
   }
 
   getToken(): string | null {
@@ -39,25 +39,25 @@ export class AuthService {
     return localStorage.getItem('role');
   }
 
+  getUsername(): string | null {
+    return localStorage.getItem('username');
+  }
+
   isLoggedIn(): boolean {
     return !!this.getToken();
   }
 
   logout(): void {
-    localStorage.removeItem('token');
-    localStorage.removeItem('role');
+    localStorage.clear();
   }
-  getMappedRole(): 'admin' | 'allotment' | 'field' {
-    const rawRole = this.getRole()?.toLowerCase();
-  
-    if (!rawRole) return 'field'; // fallback
-  
-    if (rawRole.includes('admin')) return 'admin';
-    if (rawRole.includes('allotment')) return 'allotment';
-    if (rawRole.includes('field')) return 'field';
-  
-    return 'field'; // default fallback
+
+  /** Fetch all roles from backend - useful for role-based logic or dropdowns */
+  getAvailableRoles(): Observable<any> {
+    const token = this.getToken();
+    return this.http.get(`${this.baseUrl}/roles`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
   }
-  
-  
 }

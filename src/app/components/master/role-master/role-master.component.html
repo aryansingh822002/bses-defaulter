@@ -32,14 +32,12 @@
             </div>
         </form>
 
-        <!-- Role Table Section -->
         <div class="role-table-section">
             <button type="button" class="show-table-btn" (click)="toggleRoleTable()">
                 {{ showRoleTable ? 'Hide Role Table' : 'Show Role Table' }}
             </button>
-            
-            @if (showRoleTable) {
-            <div class="role-table-container">
+
+            <div *ngIf="showRoleTable" class="role-table-container">
                 <table class="role-table">
                     <thead>
                         <tr>
@@ -51,22 +49,21 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @for (role of roles; track role.roleId; let i = $index) {
-                        <tr>
+                        <tr *ngFor="let role of roles">
                             <td class="action-buttons">
                                 <button class="icon-button edit-btn" (click)="editRole(role)" title="Edit">✏️</button>
-                                <button class="icon-button delete-btn" (click)="deleteRole(role.roleId)" title="Delete">🗑️</button>
+                                <button class="icon-button delete-btn" (click)="deleteRole(role.roleId)"
+                                    title="Delete">🗑️</button>
                             </td>
                             <td>{{ role.roleId }}</td>
                             <td>{{ role.role }}</td>
                             <td>{{ role.accountClass }}</td>
                             <td>{{ role.createDate | date:'dd/MM/yyyy' }}</td>
                         </tr>
-                        }
                     </tbody>
                 </table>
             </div>
-            }
         </div>
+
     </div>
 </div>

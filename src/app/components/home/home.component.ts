@@ -1,15 +1,10 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { NgChartsModule } from 'ng2-charts';
 import { AuthService } from '../../auth.service';
-import {
-  ChartConfiguration,
-  ChartOptions,
-  ChartType,
-} from 'chart.js';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-
+import { roleAccessConfig } from '../../role-access.config';
 
 @Component({
   selector: 'app-home',
@@ -23,10 +18,16 @@ export class HomeComponent implements OnInit {
   customerCareMenuExpanded = false;
   sidebarExpanded = false;
   showLogout = false;
-  currentView = 'home';
   showLogoutConfirm = false;
+  currentView = 'home';
 
-  userRole: 'admin' | 'allotment' | 'field' = 'field'; // default fallback
+  userRole: string = '';
+  username: string = '';
+  
+  currentRoleAccess: {
+    canViewHome: boolean;
+    sidebarKeys: string[];
+  } = { canViewHome: false, sidebarKeys: [] };
 
   form1!: FormGroup;
   form2!: FormGroup;
@@ -35,29 +36,21 @@ export class HomeComponent implements OnInit {
   constructor(
     private router: Router,
     private fb: FormBuilder,
-    private authService: AuthService // Inject AuthService here
+    private authService: AuthService
   ) { }
 
-
   ngOnInit(): void {
-    const rawRole = this.authService.getRole(); // Gets role from token (e.g., 'Admin', 'AllotmentOfficer', etc.)
-    let normalizedRole = 'field'; // Default fallback
-
-    if (rawRole) {
-      const lower = rawRole.toLowerCase();
-      if (lower.includes('admin')) {
-        normalizedRole = 'admin';
-      } else if (lower.includes('allot')) {
-        normalizedRole = 'allotment';
-      } else if (lower.includes('field')) {
-        normalizedRole = 'field';
-      }
+    this.userRole = this.authService.getRole() || '';
+    
+    if (this.userRole in roleAccessConfig) {
+      this.currentRoleAccess = roleAccessConfig[this.userRole as keyof typeof roleAccessConfig];
+    } else {
+      this.currentRoleAccess = { canViewHome: false, sidebarKeys: [] };
     }
+    this.username = this.authService.getUsername() || 'Unknown';
+  }  
 
-    this.userRole = normalizedRole as 'admin' | 'allotment' | 'field';
-    console.log("User role resolved to:", this.userRole);
-
-    // Form 1: Allotment
+  private initForms(): void {
     this.form1 = this.fb.group({
       compName: ['', Validators.required],
       company: ['', Validators.required],
@@ -72,7 +65,6 @@ export class HomeComponent implements OnInit {
       mobileNumber: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]]
     });
 
-    // Form 2: Admin
     this.form2 = this.fb.group({
       employeeId: ['', Validators.required],
       employeeName: [{ value: '', disabled: true }, Validators.required],
@@ -82,7 +74,6 @@ export class HomeComponent implements OnInit {
       endDate: ['', Validators.required]
     });
 
-    // Form 3: Field
     this.form3 = this.fb.group({
       caNumber: ['', Validators.required],
       facilitatorId: ['', Validators.required],
@@ -99,48 +90,120 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  toggleMasterMenu() {
+  // Sidebar Menu Configuration
+  menuConfig = [
+    {
+      key: 'master',
+      label: 'Master',
+      icon: 'fas fa-file-alt',
+      expanded: false,
+      submenus: [
+        { label: 'Agency Master', shortLabel: 'AM', route: '/home/master/agency-master' },
+        { label: 'Agency Mapping Master', shortLabel: 'AMM', route: '/home/master/agency-mapping-master' },
+        { label: 'Commission Master', shortLabel: 'CM', route: '/home/master/commission-master' },
+        { label: 'Agency Allocation Master', shortLabel: 'AAM', route: '/home/master/agency-allocation-master' },
+        { label: 'Defaulter Allocation Master', shortLabel: 'DAM', route: '/home/master/defaulter-allocation-master' },
+        { label: 'Role Master', shortLabel: 'RM', route: '/home/master/role-master' },
+        { label: 'User Master', shortLabel: 'UM', route: '/home/master/user-master' },
+        { label: 'Priority IVR', shortLabel: 'IVR', route: '/home/master/priority-ivr-master' }
+      ]
+    },
+    {
+      key: 'allotment',
+      label: 'Allotment & Assignment',
+      icon: 'fas fa-clipboard-list',
+      route: '/home/allotment'
+    },
+    {
+      key: 'recoveryReport',
+      label: 'Recovery Report & Update',
+      icon: 'fas fa-file-signature',
+      route: '/home/recovery-report'
+    },
+    {
+      key: 'actionTaken',
+      label: 'Action Taken Report',
+      icon: 'fas fa-id-card',
+      route: '/home/action-taken'
+    },
+    {
+      key: 'customerCare',
+      label: 'Customer Care Services',
+      icon: 'fas fa-address-book',
+      expanded: false,
+      submenus: [
+        { label: 'Call Center Calling', shortLabel: 'CC', route: '/home/customer-care/call-center' },
+        { label: 'Division Office Calling', shortLabel: 'DOC', route: '/home/customer-care/division-office' }
+      ]
+    },
+    {
+      key: 'report',
+      label: 'Report',
+      icon: 'fas fa-envelope-open-text',
+      route: '/home/report'
+    }
+  ];
+
+  get filteredMenu() {
+    return this.menuConfig.filter(menu =>
+      this.currentRoleAccess.sidebarKeys.includes(menu.key)
+    );
+  }
+
+  hasSubmenus(menuItem: any): boolean {
+    return !!menuItem.submenus?.length;
+  }
+
+  toggleMenu(menuItem: any): void {
+    menuItem.expanded = !menuItem.expanded;
+  }
+
+  toggleMasterMenu(): void {
     this.masterMenuExpanded = !this.masterMenuExpanded;
   }
 
-  toggleCustomerCareMenu() {
+  toggleCustomerCareMenu(): void {
     this.customerCareMenuExpanded = !this.customerCareMenuExpanded;
   }
 
-  toggleSidebar() {
+  toggleSidebar(): void {
     this.sidebarExpanded = !this.sidebarExpanded;
   }
 
-  toggleLogoutDropdown() {
+  toggleLogoutDropdown(): void {
     this.showLogout = !this.showLogout;
   }
 
-  logout() {
-    this.showLogoutConfirm = false;  // hide confirmation modal
-    this.showLogout = false;         // hide dropdown
-  
-    this.authService.logout();
-    this.router.navigate(['']);
-  }
-  confirmLogout() {
+  confirmLogout(): void {
     this.logout();
   }
-  
-  cancelLogout() {
+
+  cancelLogout(): void {
     this.showLogoutConfirm = false;
+  }
+
+  logout(): void {
+    this.showLogoutConfirm = false;
+    this.showLogout = false;
+    this.authService.logout();
+    this.router.navigate(['']);
   }
 
   switchView(view: string): void {
     this.currentView = view;
   }
 
+  canViewHome(): boolean {
+    return this.currentRoleAccess.canViewHome;
+  }
+
+  // Form Submission Methods
   onSubmit(): void {
     if (this.form1.valid) {
-      console.log('Form Submitted:', this.form1.value);
-      // Handle form submission logic (e.g. API call)
+      console.log('Form 1 Submitted:', this.form1.value);
     } else {
-      console.log('Form is invalid');
-      this.form1.markAllAsTouched(); // Show all validation errors
+      console.log('Form 1 Invalid');
+      this.form1.markAllAsTouched();
     }
   }
 
@@ -151,9 +214,8 @@ export class HomeComponent implements OnInit {
   onSubmitForm2(): void {
     if (this.form2.valid) {
       console.log('Form 2 Submitted:', this.form2.getRawValue());
-      // handle submission
     } else {
-      console.log('Form 2 is invalid');
+      console.log('Form 2 Invalid');
       this.form2.markAllAsTouched();
     }
   }
@@ -162,13 +224,11 @@ export class HomeComponent implements OnInit {
     this.form2.reset();
   }
 
-
   onSubmitForm3(): void {
     if (this.form3.valid) {
       console.log('Form 3 Submitted:', this.form3.value);
-      // handle submission
     } else {
-      console.log('Form 3 is invalid');
+      console.log('Form 3 Invalid');
       this.form3.markAllAsTouched();
     }
   }
@@ -176,7 +236,13 @@ export class HomeComponent implements OnInit {
   onResetForm3(): void {
     this.form3.reset();
   }
-
+  getUsername(): string {
+    const token = localStorage.getItem('token');
+    if (!token) return '';
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload?.username || '';
+  }
+  
   setView(view: string) {
     this.currentView = view;
   }
@@ -202,9 +268,7 @@ export class HomeComponent implements OnInit {
     this.filteredReports = [...this.reports];
   }
 
-
-
-  // customer care ts code
+  // customer care code
   formData = {
     customerId: '',
     issueType: '',
@@ -230,11 +294,10 @@ export class HomeComponent implements OnInit {
   }
 
   closeForm() {
-    // You can implement form hiding logic here, like toggling a boolean flag
+    // Implement form hiding logic if needed
   }
 
-
-  // report ts code
+  // summary data for reports
   summaryData = [
     {
       zoneName: 'South Delhi',

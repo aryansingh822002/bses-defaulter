@@ -26,40 +26,42 @@ import { CallCenterComponent } from './components/customer-care/call-center/call
 import { AuthGuard } from './auth.guard';
 
 export const routes: Routes = [
-    {path:'',component: LoginComponent},
-    {path:'home',
-        component: HomeComponent,
+  { path: '', component: LoginComponent },
+  {
+    path: 'home',
+    component: HomeComponent,
+    children: [
+      { path: '', component: DashboardComponent },
+      {
+        path: 'master',
+        canActivate: [AuthGuard],
+        data: { roles: ['Admin Role for Bucket Creation'] },
         children: [
-          { path: '', component: DashboardComponent },
-          {
-            path: 'master',
-            canActivate: [AuthGuard],
-            data: { roles: ['Admin'] },  // Only Admin role can access master routes
-            children: [
-              { path: '', component: DashboardComponent }, // Default master view
-              { path: 'agency-master', component: AgencyMasterComponent },
-              { path: 'agency-mapping-master', component: AgencyMappingMasterComponent },
-              { path: 'commission-master', component: CommissionMasterComponent },
-              { path: 'agency-allocation-master', component: AgencyAllocationMasterComponent },
-              { path: 'defaulter-allocation-master', component: DefaulterAllocationMasterComponent },
-              { path: 'role-master', component: RoleMasterComponent },
-              { path: 'user-master', component: UserMasterComponent },
-              { path: 'priority-ivr-master', component: PriorityIVRComponent },
-            ],
-          },
-          { path: 'allotment', component: AllotmentComponent },
-          { path: 'recovery-report', component: RecoveryReportComponent },
-          { path: 'action-taken', component: ActionTakenComponent },
-          { path: 'customer-care', 
-            children: [
+          { path: '', component: DashboardComponent }, // Default master view
+          { path: 'agency-master', component: AgencyMasterComponent },
+          { path: 'agency-mapping-master', component: AgencyMappingMasterComponent },
+          { path: 'commission-master', component: CommissionMasterComponent },
+          { path: 'agency-allocation-master', component: AgencyAllocationMasterComponent },
+          { path: 'defaulter-allocation-master', component: DefaulterAllocationMasterComponent },
+          { path: 'role-master', component: RoleMasterComponent },
+          { path: 'user-master', component: UserMasterComponent },
+          { path: 'priority-ivr-master', component: PriorityIVRComponent },
+        ],
+      },
+      { path: 'allotment', component: AllotmentComponent },
+      { path: 'recovery-report', component: RecoveryReportComponent },
+      { path: 'action-taken', component: ActionTakenComponent },
+      {
+        path: 'customer-care',
+        children: [
           { path: '', component: CustomerCareComponent }, // Default customer care view
           { path: 'call-center', component: CallCenterComponent },
           { path: 'division-office', component: DivisionOfficeComponent }
+        ]
+      },
+      { path: 'report', component: ReportComponent }
     ]
-          },
-          { path: 'report', component: ReportComponent }
-    ]
-    },
-    { path: '**', redirectTo: '' },
+  },
+  { path: '**', redirectTo: '' },
 ];
 
